@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".ProductQtyActivity"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="15dp">
+
+        <ImageButton
+            android:id="@+id/pd_bck_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/img_21"
+            android:backgroundTint="@color/black"
+            android:contentDescription="@android:string/untitled" />
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:paddingBottom="20dp"
+        android:background="#FADD88"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/leather"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/img_7"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/desc"
+            android:textColor="@color/black"
+            android:layout_toRightOf="@+id/leather"
+            android:text="Leather Shoes for women"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/price"
+            android:layout_below="@+id/desc"
+            android:layout_toRightOf="@+id/leather"
+            android:text="P 149.00"
+            android:textSize="16sp"
+            android:textColor="#003297"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sales"
+            android:layout_below="@+id/price"
+            android:layout_toRightOf="@+id/leather"
+            android:text="Buy 1 take 1"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/type"
+            android:text="Type"
+            android:textColor="@color/black"
+            android:textSize="25dp"
+            android:layout_below="@id/leather"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"/>
+        <LinearLayout
+            android:id="@+id/mode1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/type"
+            android:layout_marginTop="10dp"
+            android:background="@color/white"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Buy 1 take 1"
+                android:textSize="20sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="P 149.00"
+                android:textColor="#003297"
+                android:layout_marginLeft="180dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/qty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/mode1"
+            android:layout_marginTop="40dp"
+            android:background="@color/white"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Qty: "
+                android:textColor="@color/black"
+                android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/pQty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="1"
+                android:textColor="@color/black"
+                android:textSize="15sp"/>
+            <TextView
+                android:id="@+id/lessTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:text="-"
+                android:textColor="@color/black"
+                android:layout_marginLeft="225dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:hint="or"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/black"
+                android:layout_marginLeft="5dp"/>
+            <TextView
+                android:id="@+id/addTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:text="+"
+                android:textColor="@color/black"
+                android:layout_marginLeft="5dp"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+        <Button
+            android:id="@+id/order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:backgroundTint="#B1E5FF"
+            android:background="@drawable/shape"
+            android:layout_marginLeft="60dp"/>
+        <Button
+            android:layout_margin="5dp"
+            android:id="@+id/addToCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add to Cart"
+            android:backgroundTint="#B1E5FF"
+            android:background="@drawable/shape"
+            android:layout_weight="1"
+            android:layout_marginRight="60dp"/>
+    </LinearLayout>
+
+</LinearLayout>

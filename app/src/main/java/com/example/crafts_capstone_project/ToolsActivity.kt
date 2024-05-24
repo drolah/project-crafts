@@ -15,7 +15,7 @@ class ToolsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_tools)
-        val home = findViewById<TextView>(R.id.backButton)
+        val home = findViewById<TextView>(R.id.homeBtn)
         home.setOnClickListener{
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)

@@ -2,6 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/box"
+    android:layout_margin="5dp"
+    android:minWidth="140dp"
+    android:backgroundTint="#DAD9D9"
     android:orientation="vertical">
 
     <ImageView
@@ -14,8 +18,8 @@
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:text="Type of Shoes"
         android:textColor="#0A0B0A"/>
 
@@ -23,7 +27,7 @@
         android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
         android:text="P 449.00"
         android:textColor="#4CAF50"/>
 </LinearLayout>

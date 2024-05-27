@@ -1,5 +1,6 @@
 package com.example.crafts_capstone_project
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -15,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 
 class AccountActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -34,6 +36,11 @@ class AccountActivity : AppCompatActivity() {
         val ship = findViewById<LinearLayout>(R.id.toShip)
         val recieve = findViewById<LinearLayout>(R.id.toRecieve)
         val returns = findViewById<LinearLayout>(R.id.returns)
+        val sell = findViewById<TextView>(R.id.sell)
+        sell.setOnClickListener{
+            val intent = Intent(this, UploadProductActivity::class.java)
+            startActivity(intent)
+        }
 
         val cart = findViewById<LinearLayout>(R.id.carts)
         cart.setOnClickListener{
@@ -61,7 +68,7 @@ class AccountActivity : AppCompatActivity() {
 
         val settings = findViewById<ImageView>(R.id.settings)
         settings.setOnClickListener{
-            val options = arrayOf("Report", "Chat", "Logout")
+            val options = arrayOf("Orders", "Logout")
 
             val builder = AlertDialog.Builder(this)
 
@@ -72,15 +79,12 @@ class AccountActivity : AppCompatActivity() {
             builder.setItems(options) { dialog, which ->
                 // Handle each option click
                 when (which) {
+
                     0 -> {
-                        val intent = Intent(this, ReportActivity::class.java)
+                        val intent = Intent(this, OrderActivity::class.java)
                         startActivity(intent)
                     }
                     1 -> {
-                        val intent = Intent(this, MessageActivity::class.java)
-                        startActivity(intent)
-                    }
-                    2 -> {
                         val editor = sharedPreferences.edit()
                         editor.remove("username")
                         editor.remove("email")// Remove the username from SharedPreferences

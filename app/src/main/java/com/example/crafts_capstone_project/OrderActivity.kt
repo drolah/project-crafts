@@ -50,8 +50,7 @@ class OrderActivity : AppCompatActivity() {
 
         val back = findViewById<ImageView>(R.id.back)
         back.setOnClickListener {
-            val intent = Intent(this, MessageActivity::class.java)
-            startActivity(intent)
+            onBackPressed()
         }
 
         fetchOrders(email)

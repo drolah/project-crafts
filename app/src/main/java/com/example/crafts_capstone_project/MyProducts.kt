@@ -2,6 +2,7 @@ package com.example.crafts_capstone_project
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.ImageView
@@ -31,8 +32,13 @@ class MyProducts : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_my_products)
 
-        recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = GridLayoutManager(this, 3)
+        val back = findViewById<ImageView>(R.id.back)
+        back.setOnClickListener {
+            onBackPressed()
+        }
+
+        recyclerView = findViewById(R.id.myProducts)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE)
         val email = sharedPreferences.getString("email", null)

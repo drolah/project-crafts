@@ -19,11 +19,12 @@ class MyProductsAdapter(private val products: List<Product>) : RecyclerView.Adap
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
         return if (viewType == VIEW_TYPE_PRODUCT) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.seller_product_layout, parent, false)
+            val view = inflater.inflate(R.layout.seller_product_layout, parent, false)
             ProductViewHolder(view)
         } else {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.empty_cart_layout, parent, false)
+            val view = inflater.inflate(R.layout.empty_cart_layout, parent, false)
             EmptyViewHolder(view)
         }
     }

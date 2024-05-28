@@ -190,8 +190,8 @@ class CartActivity : AppCompatActivity() {
                 name = cartItem.name,
                 price = cartItem.price,
                 quantity = cartItem.quantity,
-                total = (cartItem.price.toDouble() * cartItem.quantity.toDouble()).toString(),
-                imageResource = cartItem.imageResource // Ensure the image resource ID is included
+                total = (cartItem.price * cartItem.quantity),
+                image = cartItem.image
             )
 
             ordersReference.push().setValue(order)

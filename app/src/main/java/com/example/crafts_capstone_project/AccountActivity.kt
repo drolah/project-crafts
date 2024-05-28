@@ -68,7 +68,7 @@ class AccountActivity : AppCompatActivity() {
 
         val settings = findViewById<ImageView>(R.id.settings)
         settings.setOnClickListener{
-            val options = arrayOf("Orders", "Logout")
+            val options = arrayOf("Orders", "My Products", "Logout")
 
             val builder = AlertDialog.Builder(this)
 
@@ -85,6 +85,10 @@ class AccountActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
                     1 -> {
+                        val intent = Intent(this, OrderActivity::class.java)
+                        startActivity(intent)
+                    }
+                    2 -> {
                         val editor = sharedPreferences.edit()
                         editor.remove("username")
                         editor.remove("email")// Remove the username from SharedPreferences

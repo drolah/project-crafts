@@ -14,9 +14,10 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginLeft="30dp"
+            android:scaleType="centerCrop"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp"
-            android:src="@drawable/img_6"/>
+            android:contentDescription="loading"/>
         <LinearLayout
             android:layout_marginTop="30dp"
             android:layout_toRightOf="@id/image"

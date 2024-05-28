@@ -39,15 +39,18 @@ class CartAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is CartViewHolder) {
             val cart = carts[position]
-            holder.name.text = cart.name
-            holder.price.text = "P ${cart.price}"
-            holder.qty.text = cart.quantity
-            holder.image.setImageResource(cart.imageResource) // Set the image resource
-            holder.checkBox.isChecked = cart.isSelected
+            with(holder) {
+                name.text = cart.name
+                price.text = "P ${cart.price}"
+                qty.text = cart.quantity.toString()
+                // Assuming ImageDownloaderTask is an AsyncTask
+                ImageDownloaderTask(image).execute(cart.image)
+                checkBox.isChecked = cart.isSelected
 
-            holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
-                cart.isSelected = isChecked
-                onItemCheckedChange(isChecked, cart)
+                checkBox.setOnCheckedChangeListener { _, isChecked ->
+                    cart.isSelected = isChecked
+                    onItemCheckedChange(isChecked, cart)
+                }
             }
         }
     }

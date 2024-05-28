@@ -31,11 +31,14 @@ class OrderAdapter(private val orders: List<Order>) : RecyclerView.Adapter<Recyc
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is OrderViewHolder) {
             val order = orders[position]
-            holder.name.text = order.name
-            holder.price.text = "P ${order.price}"
-            holder.quantity.text = order.quantity
-            holder.total.text = order.total
-            holder.image.setImageResource(order.imageResource) // Set the image resource
+            with(holder) {
+                name.text = order.name
+                price.text = "P ${order.price}"
+                quantity.text = order.quantity.toString()
+                total.text = order.total.toString()
+
+                ImageDownloaderTask(image).execute(order.image)
+            }
         }
     }
 
@@ -48,7 +51,7 @@ class OrderAdapter(private val orders: List<Order>) : RecyclerView.Adapter<Recyc
         val price: TextView = itemView.findViewById(R.id.price)
         val quantity: TextView = itemView.findViewById(R.id.qty)
         val total: TextView = itemView.findViewById(R.id.total)
-        val image: ImageView = itemView.findViewById(R.id.image) // ImageView for the product image
+        val image: ImageView = itemView.findViewById(R.id.image)
     }
 
     class EmptyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

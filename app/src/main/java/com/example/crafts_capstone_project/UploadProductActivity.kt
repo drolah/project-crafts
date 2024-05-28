@@ -24,7 +24,6 @@ import java.util.UUID
 class UploadProductActivity : AppCompatActivity() {
     private lateinit var etProductName: EditText
     private lateinit var etProductPrice: EditText
-    private lateinit var etProductStocks: EditText
     private lateinit var ivProductImage: ImageView
     private lateinit var btnChooseImage: Button
     private lateinit var btnUploadProduct: Button
@@ -59,7 +58,6 @@ class UploadProductActivity : AppCompatActivity() {
 
         etProductName = findViewById(R.id.etProductName)
         etProductPrice = findViewById(R.id.etProductPrice)
-        etProductStocks = findViewById(R.id.etProductStocks)
         ivProductImage = findViewById(R.id.ivProductImage)
         btnChooseImage = findViewById(R.id.btnChooseImage)
         btnUploadProduct = findViewById(R.id.btnUploadProduct)
@@ -91,9 +89,8 @@ class UploadProductActivity : AppCompatActivity() {
     private fun uploadProduct() {
         val productName = etProductName.text.toString().trim()
         val productPrice = etProductPrice.text.toString().trim().toDoubleOrNull()
-        val productStocks = etProductStocks.text.toString().trim().toIntOrNull()
 
-        if (productName.isEmpty() || productPrice == null || productStocks == null || imageUri == null) {
+        if (productName.isEmpty() || productPrice == null || imageUri == null) {
             // Handle error: show a message to the user
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
             return
@@ -113,7 +110,6 @@ class UploadProductActivity : AppCompatActivity() {
                         userName = userName,
                         productName = productName,
                         image = imageUrl,
-                        stocks = productStocks,
                         price = productPrice
                     )
 

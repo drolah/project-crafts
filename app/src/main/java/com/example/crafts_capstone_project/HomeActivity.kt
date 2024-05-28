@@ -48,7 +48,7 @@ class HomeActivity : AppCompatActivity() {
         storeRecyclerView = findViewById(R.id.storeRecyclerView)
         storeRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        storeAdapter = StoreAdapter(userList)
+        storeAdapter = StoreAdapter(userList, this)
         storeRecyclerView.adapter = storeAdapter
 
         fetchStoresFromFirebase()
@@ -130,7 +130,7 @@ class HomeActivity : AppCompatActivity() {
                     val user = snapshot.getValue(User::class.java)
                     user?.let { userList.add(it) }
                 }
-                storeAdapter = StoreAdapter(userList)
+                storeAdapter = StoreAdapter(userList, this@HomeActivity)
                 storeRecyclerView.adapter = storeAdapter
             }
 

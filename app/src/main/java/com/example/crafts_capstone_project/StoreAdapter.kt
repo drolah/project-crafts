@@ -1,5 +1,7 @@
 package com.example.crafts_capstone_project
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,8 +9,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class StoreAdapter(private var userList: MutableList<User>) : RecyclerView.Adapter<StoreAdapter.StoreViewHolder>() {
+class StoreAdapter(private var userList: MutableList<User>, private val context: Context) : RecyclerView.Adapter<StoreAdapter.StoreViewHolder>() {
+    private lateinit var sharedPreferences: SharedPreferences
 
+    init {
+        sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.stores_display, parent, false)
         return StoreViewHolder(view)
@@ -16,17 +22,16 @@ class StoreAdapter(private var userList: MutableList<User>) : RecyclerView.Adapt
 
     override fun onBindViewHolder(holder: StoreViewHolder, position: Int) {
         val user = userList[position]
-        holder.storeName.text = user.username
+        val username = sharedPreferences.getString("username", null)
+        val email = sharedPreferences.getString("email", null)
+
+        if (user.username != username && user.email != email) {
+            holder.storeName.text = user.username
+        }
     }
 
     override fun getItemCount(): Int {
         return userList.size
-    }
-
-    fun updateUsers(newUsers: List<User>) {
-        userList.clear()
-        userList.addAll(newUsers)
-        notifyDataSetChanged()
     }
 
     class StoreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

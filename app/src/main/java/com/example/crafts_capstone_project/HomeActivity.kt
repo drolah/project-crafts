@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.Toast
 import androidx.compose.ui.text.capitalize
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -24,9 +26,12 @@ import kotlinx.coroutines.delay
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
+    private lateinit var storeRecyclerView: RecyclerView
     private lateinit var productAdapter: ProductAdapter
     private lateinit var databaseReference: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var storeAdapter: StoreAdapter
+    private val userList = mutableListOf<User>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +43,16 @@ class HomeActivity : AppCompatActivity() {
         val messageBtn = findViewById<ImageView>(R.id.messages)
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = GridLayoutManager(this, 3)
+
+
+        storeRecyclerView = findViewById(R.id.storeRecyclerView)
+        storeRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        storeAdapter = StoreAdapter(userList)
+        storeRecyclerView.adapter = storeAdapter
+
+        fetchStoresFromFirebase()
+
 
         sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE)
         val username = sharedPreferences.getString("username", null)
@@ -69,13 +84,8 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Initialize Firebase Database reference
-        databaseReference = FirebaseDatabase.getInstance().getReference("products")
-
-
-
         // Fetch data from Firebase Database
-        fetchDataFromFirebase()
+        fetchProductsFromFirebase()
 
 
         val searchView = findViewById<SearchView>(R.id.search)
@@ -91,7 +101,8 @@ class HomeActivity : AppCompatActivity() {
         })
     }
 
-    private fun fetchDataFromFirebase() {
+    private fun fetchProductsFromFirebase() {
+        databaseReference = FirebaseDatabase.getInstance().getReference("products")
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val productList = mutableListOf<Product>()
@@ -106,6 +117,25 @@ class HomeActivity : AppCompatActivity() {
 
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.e(TAG, "Database Error: ${databaseError.message}")
+            }
+        })
+    }
+
+    private fun fetchStoresFromFirebase() {
+        databaseReference = FirebaseDatabase.getInstance().getReference("users")
+        databaseReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val userList = mutableListOf<User>()
+                for (snapshot in dataSnapshot.children) {
+                    val user = snapshot.getValue(User::class.java)
+                    user?.let { userList.add(it) }
+                }
+                storeAdapter = StoreAdapter(userList)
+                storeRecyclerView.adapter = storeAdapter
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.e("MainActivity", "Database Error: ${databaseError.message}")
             }
         })
     }

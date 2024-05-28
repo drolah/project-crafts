@@ -78,6 +78,7 @@ class SignupActivity : AppCompatActivity() {
                             val userData = HashMap<String, Any>()
                             userData["username"] = usernameText
                             userData["email"] = emailText
+                            userData["isOnline"] = false
                             userRef.setValue(userData)
 
                             Toast.makeText(this, "Sign up successful", Toast.LENGTH_SHORT).show()

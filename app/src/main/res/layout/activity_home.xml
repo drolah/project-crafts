@@ -43,163 +43,23 @@
         android:orientation="vertical">
 
 
-
-        <HorizontalScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
             <LinearLayout
                 android:id="@+id/stores"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="vertical"
                 android:layout_marginBottom="10dp">
 
-                <LinearLayout
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:orientation="vertical"
-                    android:background="@drawable/shape"
-                    android:layout_margin="3dp"
-                    android:backgroundTint="#96E0E3">
-                    <ImageView
-                        android:id="@+id/delete"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/img_28"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:text="Abby Store"
-                        android:textColor="#2B2B2B"
-                        android:layout_gravity="center"
-                        android:textStyle="bold"
-                        android:textSize="12sp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:orientation="vertical"
-                    android:background="@drawable/shape"
-                    android:layout_margin="3dp"
-                    android:backgroundTint="#96E0E3">
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/img_28"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_gravity="center"
-                        android:text="Patrick Store"
-                        android:textColor="#2B2B2B"
-                        android:textStyle="bold"
-                        android:textSize="12sp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:orientation="vertical"
-                    android:background="@drawable/shape"
-                    android:layout_margin="3dp"
-                    android:backgroundTint="#96E0E3">
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/img_28"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:text="Kim Store"
-                        android:textColor="#2B2B2B"
-                        android:layout_gravity="center"
-                        android:textStyle="bold"
-                        android:textSize="12sp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:orientation="vertical"
-                    android:background="@drawable/shape"
-                    android:layout_margin="3dp"
-                    android:backgroundTint="#96E0E3">
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/img_28"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:text="Layla Store"
-                        android:textColor="#2B2B2B"
-                        android:layout_gravity="center"
-                        android:textStyle="bold"
-                        android:textSize="12sp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:orientation="vertical"
-                    android:background="@drawable/shape"
-                    android:layout_margin="3dp"
-                    android:backgroundTint="#96E0E3">
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/img_28"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:text="Channel"
-                        android:textColor="#2B2B2B"
-                        android:layout_gravity="center"
-                        android:textStyle="bold"
-                        android:textSize="12sp"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:orientation="vertical"
-                    android:background="@drawable/shape"
-                    android:layout_margin="3dp"
-                    android:backgroundTint="#96E0E3">
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/img_28"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:text="LV"
-                        android:textColor="#2B2B2B"
-                        android:layout_gravity="center"
-                        android:textStyle="bold"
-                        android:textSize="12sp"/>
-
-                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/storeRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:scrollbars="horizontal"
+                    android:layout_below="@id/stores"/>
 
             </LinearLayout>
-        </HorizontalScrollView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

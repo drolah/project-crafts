@@ -42,9 +42,9 @@
 
                 <ImageView
                     android:id="@+id/image"
-                    android:layout_width="match_parent"
+                    android:layout_width="200dp"
+                    android:scaleType="centerCrop"
                     android:layout_height="200dp"
-                    android:src="@drawable/img_7"
                     android:layout_gravity="center"/>
             </LinearLayout>
 
@@ -54,6 +54,27 @@
                 android:layout_marginTop="40dp"
                 android:orientation="vertical"
                 android:background="#FFF3BE">
+
+                <LinearLayout
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/img_20"
+                        android:layout_gravity="center"/>
+                    <TextView
+                        android:id="@+id/storeName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center"
+                        android:text="store"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/price"

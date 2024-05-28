@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/white"
+    android:background="#C5EDFF"
     android:fitsSystemWindows="true"
     android:gravity="center"
     tools:context=".UploadProductActivity">
@@ -70,7 +70,7 @@
                 android:textAlignment="center"
                 android:hint="price"
                 android:layout_centerVertical="true"
-                android:inputType="number"/>
+                android:inputType="numberDecimal"/>
 
             <EditText
                 android:id="@+id/etProductStocks"
@@ -93,16 +93,17 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
+            android:scaleType="centerCrop"
             android:layout_below="@id/etProductStocks"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
             android:contentDescription="Product Image"
-            android:background="@color/white" />
+            android:background="@color/white"/>
 
         <Button
             android:id="@+id/btnChooseImage"
             android:layout_width="150dp"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="#9ADBF8"
             android:layout_gravity="center"
             android:background="@drawable/border"
             android:layout_height="wrap_content"

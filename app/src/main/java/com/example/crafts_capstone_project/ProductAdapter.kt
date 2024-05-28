@@ -20,7 +20,6 @@ class ProductAdapter(private var productList: List<Product>) : RecyclerView.Adap
         val product = productList[position]
         holder.bind(product)
         holder.itemView.setOnClickListener {
-            // Handle item click here
             val context = holder.itemView.context
             val intent = Intent(context, ProductDisplayActivity::class.java)
             intent.putExtra("product", product)
@@ -36,11 +35,13 @@ class ProductAdapter(private var productList: List<Product>) : RecyclerView.Adap
         private val itemImage: ImageView = itemView.findViewById(R.id.image)
         private val itemName: TextView = itemView.findViewById(R.id.name)
         private val itemPrice: TextView = itemView.findViewById(R.id.price)
+        private val storeName: TextView = itemView.findViewById(R.id.userName)
 
         fun bind(product: Product) {
-            itemName.text = product.name
-            itemPrice.text = product.price
-            itemImage.setImageResource(product.image)
+            storeName.text = product.userName
+            itemName.text = product.productName
+            itemPrice.text = "Php ${product.price}"
+            ImageDownloaderTask(itemImage).execute(product.image)
         }
     }
 

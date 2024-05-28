@@ -23,14 +23,15 @@ class ProductDisplayActivity : AppCompatActivity() {
         val product = intent.getSerializableExtra("product") as? Product
 
         if (product != null) {
-
             val imageView = findViewById<ImageView>(R.id.image)
             val priceTextView = findViewById<TextView>(R.id.price)
             val nameTextView = findViewById<TextView>(R.id.name)
+            val storeName = findViewById<TextView>(R.id.storeName)
 
-            imageView.setImageResource(product.image)
-            priceTextView.text = "Php ${product.price}" // Assuming product.price is a String
-            nameTextView.text = product.name
+            storeName.text = product.userName
+            ImageDownloaderTask(imageView).execute(product.image)
+            priceTextView.text = "Php ${product.price}"
+            nameTextView.text = product.productName
         }
 
         val pdBack = findViewById<ImageButton>(R.id.pd_bck_btn)

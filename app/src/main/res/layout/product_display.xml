@@ -13,13 +13,35 @@
         android:layout_width="100dp"
         android:layout_gravity="center"
         android:layout_height="100dp"
-        android:background="@drawable/img_6"
+        android:scaleType="centerCrop"
         android:layout_marginTop="20dp"/>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="20dp"
+            android:src="@drawable/img_20"
+            android:layout_height="20dp"/>
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:textSize="10sp"
+            android:fontFamily="monospace"
+            android:layout_marginLeft="10dp"
+            android:text="store"/>
+    </LinearLayout>
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:textSize="10sp"
         android:text="Type of Shoes"
         android:textColor="#0A0B0A"/>
 
@@ -27,6 +49,7 @@
         android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
+        android:textSize="10sp"
         android:layout_marginLeft="10dp"
         android:text="P 449.00"
         android:textColor="#4CAF50"/>

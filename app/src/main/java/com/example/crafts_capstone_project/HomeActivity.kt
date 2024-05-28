@@ -73,6 +73,7 @@ class HomeActivity : AppCompatActivity() {
         databaseReference = FirebaseDatabase.getInstance().getReference("products")
 
 
+
         // Fetch data from Firebase Database
         fetchDataFromFirebase()
 

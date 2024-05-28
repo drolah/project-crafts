@@ -1,16 +1,25 @@
 package com.example.crafts_capstone_project
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import java.util.UUID
 
 class UploadProductActivity : AppCompatActivity() {
     private lateinit var etProductName: EditText
@@ -19,12 +28,34 @@ class UploadProductActivity : AppCompatActivity() {
     private lateinit var ivProductImage: ImageView
     private lateinit var btnChooseImage: Button
     private lateinit var btnUploadProduct: Button
+    private lateinit var sharedPreferences: SharedPreferences
     private var imageUri: Uri? = null
     private val PICK_IMAGE_REQUEST = 71
+    private var userName = ""
+    private var userEmail = ""
+
+    private lateinit var database: DatabaseReference
+    private lateinit var storageReference: StorageReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_upload_product)
+        sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE)
+
+
+        val user = sharedPreferences.getString("username", null)
+        user?.let {
+            userName = user
+        }
+
+        val email = sharedPreferences.getString("email", null)
+        email?.let {
+            userEmail = email
+        }
+
+
+        database = FirebaseDatabase.getInstance().reference
+        storageReference = FirebaseStorage.getInstance().reference
 
         etProductName = findViewById(R.id.etProductName)
         etProductPrice = findViewById(R.id.etProductPrice)
@@ -46,7 +77,7 @@ class UploadProductActivity : AppCompatActivity() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST)
+        startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE_REQUEST)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -62,14 +93,48 @@ class UploadProductActivity : AppCompatActivity() {
         val productPrice = etProductPrice.text.toString().trim().toDoubleOrNull()
         val productStocks = etProductStocks.text.toString().trim().toIntOrNull()
 
-
-        if (productName.isEmpty() || productPrice == null || productStocks == null) {
+        if (productName.isEmpty() || productPrice == null || productStocks == null || imageUri == null) {
             // Handle error: show a message to the user
+            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val intent = Intent(this, AccountActivity::class.java)
-        startActivity(intent)
-    }
+        // Upload image to Firebase Storage
+        val imageRef = storageReference.child("product_images/${UUID.randomUUID()}.jpg")
+        imageRef.putFile(imageUri!!)
+            .addOnSuccessListener { taskSnapshot ->
+                imageRef.downloadUrl.addOnSuccessListener { uri ->
+                    // Get the download URL for the uploaded image
+                    val imageUrl = uri.toString()
 
+                    // Create a new product object
+                    val product = Product(
+                        email = userEmail,
+                        userName = userName,
+                        productName = productName,
+                        image = imageUrl,
+                        stocks = productStocks,
+                        price = productPrice
+                    )
+
+                    // Save product to Firebase Realtime Database
+                    val productId = database.child("products").push().key
+                    if (productId != null) {
+                        database.child("products").child(productId).setValue(product)
+                            .addOnSuccessListener {
+                                Toast.makeText(this, "Product uploaded successfully", Toast.LENGTH_SHORT).show()
+                                // Redirect to another activity if needed
+                                val intent = Intent(this, AccountActivity::class.java)
+                                startActivity(intent)
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this, "Failed to upload product", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
+            }
+    }
 }

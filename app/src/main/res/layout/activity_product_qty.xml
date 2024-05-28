@@ -34,9 +34,10 @@
             android:id="@+id/leather"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:scaleType="centerCrop"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/img_7"/>
+            android:layout_marginTop="15dp"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -90,17 +91,18 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:hint="Buy 1 take 1"
-                android:textSize="20sp"/>
+                android:textColor="@color/black"
+                android:textSize="15sp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 android:text="P 149.00"
-                android:textColor="#003297"
-                android:layout_marginLeft="180dp"/>
+                android:textColor="#003297"/>
         </LinearLayout>
 
         <LinearLayout
@@ -117,11 +119,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Qty: "
+                android:layout_gravity="center"
                 android:textColor="@color/black"
                 android:textSize="15sp"/>
             <TextView
                 android:id="@+id/pQty"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text="1"
@@ -132,9 +137,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="25sp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="-"
-                android:textColor="@color/black"
-                android:layout_marginLeft="225dp"/>
+                android:textColor="@color/black"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -143,14 +149,17 @@
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/black"
                 android:layout_marginLeft="5dp"/>
+
             <TextView
                 android:id="@+id/addTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="25sp"
+                android:layout_marginLeft="5dp"
                 android:text="+"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:textColor="@color/black"
-                android:layout_marginLeft="5dp"/>
+                android:textSize="25sp" />
 
         </LinearLayout>
 

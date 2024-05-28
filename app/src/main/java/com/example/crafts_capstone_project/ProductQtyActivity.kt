@@ -45,9 +45,9 @@ class ProductQtyActivity : AppCompatActivity() {
             val priceTextView = findViewById<TextView>(R.id.price)
             val nameTextView = findViewById<TextView>(R.id.desc)
 
-            imageView.setImageResource(product.image)
-            priceTextView.text = "Php ${product.price}" // Assuming product.price is a String
-            nameTextView.text = product.name
+//            imageView.setImageResource(product.image)
+//            priceTextView.text = "Php ${product.price}" // Assuming product.price is a String
+//            nameTextView.text = product.name
         }
         lessTv.setOnClickListener {
             decrementNumber()
@@ -115,13 +115,13 @@ class ProductQtyActivity : AppCompatActivity() {
         val total = product.price.toDouble() * quantity
 
         val order = Order(
-            username = username,
-            email = email,
-            name = product.name,
-            price = product.price,
-            quantity = quantity.toString(),
-            total = total.toString(),
-            imageResource = product.image // Ensure the image resource ID is included
+//            username = username,
+//            email = email,
+//            name = product.name,
+//            price = product.price,
+//            quantity = quantity.toString(),
+//            total = total.toString(),
+//            imageResource = product.image // Ensure the image resource ID is included
         )
 
         databaseReference.push().setValue(order)
@@ -153,13 +153,13 @@ class ProductQtyActivity : AppCompatActivity() {
         val total = product.price.toDouble() * quantity
 
         val cart = Cart(
-            username = username,
-            email = email,
-            name = product.name,
-            price = product.price,
-            quantity = quantity.toString(),
-            total = total.toString(),
-            imageResource = product.image // Ensure the image resource ID is included
+//            username = username,
+//            email = email,
+//            name = product.name,
+//            price = product.price,
+//            quantity = quantity.toString(),
+//            total = total.toString(),
+//            imageResource = product.image // Ensure the image resource ID is included
         )
 
         databaseReference.push().setValue(cart)

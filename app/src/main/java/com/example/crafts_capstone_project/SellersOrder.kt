@@ -20,7 +20,7 @@ import com.google.firebase.database.ValueEventListener
 
 class SellersOrder : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var orderAdapter: OrderAdapter
+    private lateinit var orderAdapter: SellersOrderAdapter
     private lateinit var orders: MutableList<Order>
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var database: FirebaseDatabase
@@ -40,7 +40,7 @@ class SellersOrder : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         orders = mutableListOf()
-        orderAdapter = OrderAdapter(orders)
+        orderAdapter = SellersOrderAdapter(orders)
         recyclerView.adapter = orderAdapter
 
         database = FirebaseDatabase.getInstance()

@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/box"
     android:layout_margin="5dp"
+    android:fitsSystemWindows="true"
     android:minWidth="140dp"
     android:backgroundTint="#DAD9D9"
     android:orientation="vertical">

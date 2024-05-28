@@ -36,6 +36,7 @@ class SellersOrderAdapter(private val orders: List<Order>) : RecyclerView.Adapte
                 price.text = "P ${order.price}"
                 quantity.text = order.quantity.toString()
                 total.text = order.total.toString()
+                customerName.text = order.username
 
                 ImageDownloaderTask(image).execute(order.image)
             }
@@ -52,6 +53,7 @@ class SellersOrderAdapter(private val orders: List<Order>) : RecyclerView.Adapte
         val quantity: TextView = itemView.findViewById(R.id.qty)
         val total: TextView = itemView.findViewById(R.id.total)
         val image: ImageView = itemView.findViewById(R.id.image)
+        val customerName: TextView = itemView.findViewById(R.id.customerName)
     }
 
     class EmptyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

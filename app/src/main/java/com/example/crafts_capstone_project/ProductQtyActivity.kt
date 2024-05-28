@@ -121,7 +121,9 @@ class ProductQtyActivity : AppCompatActivity() {
             price = product.price,
             quantity = quantity,
             total = total,
-            image = product.image
+            image = product.image,
+            storeEmail = product.email,
+            storeName = product.userName
         )
 
         databaseReference.push().setValue(order)
@@ -159,7 +161,9 @@ class ProductQtyActivity : AppCompatActivity() {
             price = product.price,
             quantity = quantity,
             total = total,
-            image = product.image
+            image = product.image,
+            storeEmail = product.email,
+            storeName = product.userName
         )
 
         databaseReference.push().setValue(cart)

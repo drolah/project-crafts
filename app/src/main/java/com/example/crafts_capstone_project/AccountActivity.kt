@@ -81,11 +81,11 @@ class AccountActivity : AppCompatActivity() {
                 when (which) {
 
                     0 -> {
-                        val intent = Intent(this, OrderActivity::class.java)
+                        val intent = Intent(this, SellersOrder::class.java)
                         startActivity(intent)
                     }
                     1 -> {
-                        val intent = Intent(this, OrderActivity::class.java)
+                        val intent = Intent(this, MyProducts::class.java)
                         startActivity(intent)
                     }
                     2 -> {

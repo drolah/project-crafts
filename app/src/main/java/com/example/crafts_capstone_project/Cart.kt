@@ -8,5 +8,8 @@ data class Cart(
     val quantity: Int = 0,
     val total: Double = 0.0,
     val image: String = "",
-    var isSelected: Boolean = false
+    var isSelected: Boolean = false,
+
+    val storeName: String = "",
+    val storeEmail: String = "",
 ) : java.io.Serializable

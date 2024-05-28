@@ -7,5 +7,7 @@ data class Order(
     val price: Double = 0.0,
     val quantity: Int = 0,
     val total: Double = 0.0,
+    val storeName: String = "",
+    val storeEmail: String = "",
     val image: String = ""
 ) : java.io.Serializable

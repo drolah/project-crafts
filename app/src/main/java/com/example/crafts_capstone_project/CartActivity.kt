@@ -191,7 +191,9 @@ class CartActivity : AppCompatActivity() {
                 price = cartItem.price,
                 quantity = cartItem.quantity,
                 total = (cartItem.price * cartItem.quantity),
-                image = cartItem.image
+                image = cartItem.image,
+                storeName = cartItem.storeName,
+                storeEmail = cartItem.storeEmail
             )
 
             ordersReference.push().setValue(order)

@@ -70,6 +70,16 @@ class MainActivity : ComponentActivity() {
                                     // Save username in SharedPreferences
                                     saveUsername(username, emailText, passwordText)
 
+                                    database.child(uid).child("isOnline").setValue(true).addOnCompleteListener { updateTask ->
+                                        if (updateTask.isSuccessful) {
+                                            // Start HomeActivity
+                                            val intent = Intent(this@MainActivity, HomeActivity::class.java)
+                                            startActivity(intent)
+                                            finish()
+                                        } else {
+                                            Toast.makeText(this@MainActivity, "Failed to update online status", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
                                     // Start HomeActivity
                                     val intent = Intent(this@MainActivity, HomeActivity::class.java)
                                     startActivity(intent)

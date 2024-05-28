@@ -1,6 +1,7 @@
 package com.example.crafts_capstone_project
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +28,15 @@ class StoreAdapter(private var userList: MutableList<User>, private val context:
 
         if (user.username != username && user.email != email) {
             holder.storeName.text = user.username
+            holder.itemView.setOnClickListener {
+                // Open chat with this user
+                val intent = Intent(context, MessengerActivity::class.java)
+                intent.putExtra("senderUsername", username)
+                intent.putExtra("senderEmail", email)
+                intent.putExtra("receiverUsername", user.username)
+                intent.putExtra("receiverEmail", user.email)
+                context.startActivity(intent)
+            }
         }
     }
 

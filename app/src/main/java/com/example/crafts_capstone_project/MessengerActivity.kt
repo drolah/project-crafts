@@ -13,78 +13,105 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import java.util.UUID
 
 class MessengerActivity : AppCompatActivity() {
-    private lateinit var messageContainer: LinearLayout
     private lateinit var messageInput: EditText
-    private lateinit var sharedPreferences: SharedPreferences
-
-    companion object {
-        const val PREFS_NAME = "MessengerPrefs"
-        const val MESSAGES_KEY = "Messages"
-    }
+    private lateinit var senderUsername: String
+    private lateinit var senderEmail: String
+    private lateinit var receiverUsername: String
+    private lateinit var receiverEmail: String
+    private lateinit var database: DatabaseReference
+    private lateinit var messageAdapter: MessageAdapter
+    private lateinit var messagesRecyclerView: RecyclerView
+    private val messages = mutableListOf<Message>()
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_messenger)
-        val backBtn = findViewById<ImageButton>(R.id.back)
-        backBtn.setOnClickListener {
-            intent = Intent(this, ChatActivity::class.java)
-            startActivity(intent)
-        }
+        senderUsername = intent.getStringExtra("senderUsername") ?: ""
+        senderEmail = intent.getStringExtra("senderEmail") ?: ""
+        receiverUsername = intent.getStringExtra("receiverUsername") ?: ""
+        receiverEmail = intent.getStringExtra("receiverEmail") ?: ""
 
-        messageContainer = findViewById(R.id.messageContainer)
+        database = FirebaseDatabase.getInstance().reference.child("messages")
+
+        val receiverName = findViewById<TextView>(R.id.receiverName)
+
+        receiverName.text = receiverUsername
+
         messageInput = findViewById(R.id.messageInput)
         val sendButton: ImageView = findViewById(R.id.sendButton)
-        sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        messagesRecyclerView = findViewById(R.id.messages)
 
-        // Load saved messages
+        messageAdapter = MessageAdapter(messages, senderEmail)
+        messagesRecyclerView.layoutManager = LinearLayoutManager(this)
+        messagesRecyclerView.adapter = messageAdapter
+
         loadMessages()
 
-        // Send button click listener
         sendButton.setOnClickListener {
-            val message = messageInput.text.toString().trim()
-            if (message.isNotEmpty()) {
-                addMessageToView(message)
-                saveMessage(message)
+            val messageContent = messageInput.text.toString().trim()
+            if (messageContent.isNotEmpty()) {
+                sendMessage(messageContent)
                 messageInput.setText("")
             }
         }
     }
 
-    private fun addMessageToView(message: String) {
-        val textView = TextView(this).apply {
-            text = message
-            setPadding(16, 8, 16, 8)
-            setBackgroundResource(R.drawable.shape_input) // Create a drawable for message background
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                setMargins(0, 8, 0, 8)
-                gravity = Gravity.END // Align the message to the right
+    private fun sendMessage(messageContent: String) {
+        val timestamp = System.currentTimeMillis()
+        val messageId = UUID.randomUUID().toString()
+
+        val message = Message(
+            senderUsername,
+            senderEmail,
+            receiverUsername,
+            receiverEmail,
+            messageContent,
+            timestamp
+        )
+
+        database.child(messageId).setValue(message)
+            .addOnSuccessListener {
+                messages.add(message)
+                messageAdapter.notifyItemInserted(messages.size - 1)
+                messagesRecyclerView.scrollToPosition(messages.size - 1)
             }
-        }
-        messageContainer.addView(textView)
-
-        // Scroll to the bottom
-        val scrollView: ScrollView = findViewById(R.id.content)
-        scrollView.post { scrollView.fullScroll(View.FOCUS_DOWN) }
-    }
-
-    private fun saveMessage(message: String) {
-        val messages = sharedPreferences.getStringSet(MESSAGES_KEY, mutableSetOf())?.toMutableSet()
-        messages?.add(message)
-        sharedPreferences.edit().putStringSet(MESSAGES_KEY, messages).apply()
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to send message", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun loadMessages() {
-        val messages = sharedPreferences.getStringSet(MESSAGES_KEY, mutableSetOf())
-        messages?.forEach { addMessageToView(it) }
+        database.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val message = snapshot.getValue(Message::class.java)
+                if (message != null) {
+                    messages.add(message)
+                    messageAdapter.notifyItemInserted(messages.size - 1)
+                    messagesRecyclerView.scrollToPosition(messages.size - 1)
+                }
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
+            override fun onCancelled(error: DatabaseError) {}
+        })
     }
 }

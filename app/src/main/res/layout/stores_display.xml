@@ -17,7 +17,7 @@
             android:id="@+id/storeName"
             android:layout_width="100dp"
             android:layout_height="30dp"
-            android:text="Abby Store"
+            android:text="store"
             android:textAlignment="center"
             android:textColor="#2B2B2B"
             android:layout_gravity="center"

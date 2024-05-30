@@ -32,6 +32,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var storeAdapter: StoreAdapter
     private val userList = mutableListOf<User>()
+    private var userEmail = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +57,7 @@ class HomeActivity : AppCompatActivity() {
 
         sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE)
         val username = sharedPreferences.getString("username", null)
+        userEmail = sharedPreferences.getString("email", null).toString()
 
         if (username == null || username.isEmpty()) {
             // Username doesn't exist or is empty, redirect to login page
@@ -128,7 +130,11 @@ class HomeActivity : AppCompatActivity() {
                 val userList = mutableListOf<User>()
                 for (snapshot in dataSnapshot.children) {
                     val user = snapshot.getValue(User::class.java)
-                    user?.let { userList.add(it) }
+                    user?.let {
+                        if(it.email != userEmail){
+                            userList.add(it)
+                        }
+                    }
                 }
                 storeAdapter = StoreAdapter(userList, this@HomeActivity)
                 storeRecyclerView.adapter = storeAdapter

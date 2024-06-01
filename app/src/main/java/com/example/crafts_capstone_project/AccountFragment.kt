@@ -1,83 +1,59 @@
 package com.example.crafts_capstone_project
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class AccountActivity : AppCompatActivity() {
+class AccountFragment : Fragment() {
+
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference
-
-    @SuppressLint("MissingInflatedId")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_account)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_account, container, false)
 
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference.child("users")
-        sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE)
+        sharedPreferences = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE)
 
-        val username = findViewById<TextView>(R.id.accountName)
+        val username = view.findViewById<TextView>(R.id.accountName)
         val user = sharedPreferences.getString("username", null)
         user?.let {
             username.text = user
         }
 
-        val pay = findViewById<LinearLayout>(R.id.toPay)
-        val ship = findViewById<LinearLayout>(R.id.toShip)
-        val recieve = findViewById<LinearLayout>(R.id.toRecieve)
-        val returns = findViewById<LinearLayout>(R.id.returns)
-        val sell = findViewById<TextView>(R.id.sell)
+        val pay = view.findViewById<LinearLayout>(R.id.toPay)
+        val ship = view.findViewById<LinearLayout>(R.id.toShip)
+        val receive = view.findViewById<LinearLayout>(R.id.toRecieve)
+        val returns = view.findViewById<LinearLayout>(R.id.returns)
+        val sell = view.findViewById<TextView>(R.id.sell)
+
         sell.setOnClickListener {
-            val intent = Intent(this, UploadProductActivity::class.java)
+            val intent = Intent(requireContext(), UploadProductActivity::class.java)
             startActivity(intent)
         }
 
-        val cart = findViewById<LinearLayout>(R.id.carts)
-        cart.setOnClickListener {
-            val intent = Intent(this, CartActivity::class.java)
-            startActivity(intent)
-        }
-
-        val design = findViewById<LinearLayout>(R.id.designs)
-        design.setOnClickListener {
-            val intent = Intent(this, ToolsActivity::class.java)
-            startActivity(intent)
-        }
-
-        val home = findViewById<LinearLayout>(R.id.homes)
-        home.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-        }
-
-        val messages = findViewById<LinearLayout>(R.id.messages)
-        messages.setOnClickListener {
-            val intent = Intent(this, MessageActivity::class.java)
-            startActivity(intent)
-        }
-
-        val settings = findViewById<ImageView>(R.id.settings)
+        val settings = view.findViewById<ImageView>(R.id.settings)
         settings.setOnClickListener {
             val options = arrayOf("Orders", "My Products", "Logout")
 
-            val builder = AlertDialog.Builder(this)
+            val builder = AlertDialog.Builder(requireContext())
 
             // Set the dialog title
             builder.setTitle("Settings")
@@ -87,12 +63,12 @@ class AccountActivity : AppCompatActivity() {
                 // Handle each option click
                 when (which) {
                     0 -> {
-                        val intent = Intent(this, SellersOrder::class.java)
+                        val intent = Intent(requireContext(), SellersOrder::class.java)
                         startActivity(intent)
                     }
 
                     1 -> {
-                        val intent = Intent(this, MyProducts::class.java)
+                        val intent = Intent(requireContext(), MyProducts::class.java)
                         startActivity(intent)
                     }
 
@@ -112,17 +88,11 @@ class AccountActivity : AppCompatActivity() {
 
                                         // Logout and navigate to MainActivity
                                         auth.signOut()
-                                        val intent = Intent(this, MainActivity::class.java)
-                                        intent.flags =
-                                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                        val intent = Intent(requireContext(), MainActivity::class.java)
+                                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                                         startActivity(intent)
-                                        finish()
                                     } else {
-                                        Toast.makeText(
-                                            this,
-                                            "Failed to update online status",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+                                        Toast.makeText(requireContext(), "Failed to update online status", Toast.LENGTH_SHORT).show()
                                     }
                                 }
                         }
@@ -139,23 +109,25 @@ class AccountActivity : AppCompatActivity() {
         }
 
         pay.setOnClickListener {
-            val intent = Intent(this, OrderStatus::class.java)
+            val intent = Intent(requireContext(), OrderStatus::class.java)
             startActivity(intent)
         }
 
         ship.setOnClickListener {
-            val intent = Intent(this, OrderStatus::class.java)
+            val intent = Intent(requireContext(), OrderStatus::class.java)
             startActivity(intent)
         }
 
-        recieve.setOnClickListener {
-            val intent = Intent(this, OrderStatus::class.java)
+        receive.setOnClickListener {
+            val intent = Intent(requireContext(), OrderStatus::class.java)
             startActivity(intent)
         }
 
         returns.setOnClickListener {
-            val intent = Intent(this, OrderStatus::class.java)
+            val intent = Intent(requireContext(), OrderStatus::class.java)
             startActivity(intent)
         }
+
+        return view
     }
 }

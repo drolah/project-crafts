@@ -1,14 +1,17 @@
 package com.example.crafts_capstone_project
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -32,14 +35,21 @@ class UploadProductActivity : AppCompatActivity() {
     private val PICK_IMAGE_REQUEST = 71
     private var userName = ""
     private var userEmail = ""
+    private lateinit var progressBar: ProgressBar
 
     private lateinit var database: DatabaseReference
     private lateinit var storageReference: StorageReference
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_upload_product)
         sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE)
+
+        val back = findViewById<TextView>(R.id.back)
+        back.setOnClickListener {
+            onBackPressed()
+        }
 
 
         val user = sharedPreferences.getString("username", null)
@@ -52,7 +62,7 @@ class UploadProductActivity : AppCompatActivity() {
             userEmail = email
         }
 
-
+        progressBar = findViewById(R.id.progressBar)
         database = FirebaseDatabase.getInstance().reference
         storageReference = FirebaseStorage.getInstance().reference
 
@@ -96,6 +106,8 @@ class UploadProductActivity : AppCompatActivity() {
             return
         }
 
+        progressBar.visibility = View.VISIBLE
+
         // Upload image to Firebase Storage
         val imageRef = storageReference.child("product_images/${UUID.randomUUID()}.jpg")
         imageRef.putFile(imageUri!!)
@@ -118,18 +130,21 @@ class UploadProductActivity : AppCompatActivity() {
                     if (productId != null) {
                         database.child("products").child(productId).setValue(product)
                             .addOnSuccessListener {
+                                progressBar.visibility = View.GONE
                                 Toast.makeText(this, "Product uploaded successfully", Toast.LENGTH_SHORT).show()
                                 // Redirect to another activity if needed
-                                val intent = Intent(this, AccountActivity::class.java)
+                                val intent = Intent(this, HomeActivity::class.java)
                                 startActivity(intent)
                             }
                             .addOnFailureListener {
+                                progressBar.visibility = View.GONE
                                 Toast.makeText(this, "Failed to upload product", Toast.LENGTH_SHORT).show()
                             }
                     }
                 }
             }
             .addOnFailureListener {
+                progressBar.visibility = View.GONE
                 Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
             }
     }

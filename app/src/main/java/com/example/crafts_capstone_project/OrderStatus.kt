@@ -18,8 +18,7 @@ class OrderStatus : AppCompatActivity() {
         val backButton = findViewById<ImageView>(R.id.orderStatus)
 
         backButton.setOnClickListener{
-            val intent = Intent(this, AccountActivity::class.java)
-            startActivity(intent)
+            onBackPressed()
         }
     }
 }

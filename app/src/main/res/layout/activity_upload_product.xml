@@ -1,107 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#C5EDFF"
     android:fitsSystemWindows="true"
-    android:gravity="center"
     tools:context=".UploadProductActivity">
 
-    <LinearLayout
-        android:gravity="center_vertical"
-        android:layout_width="320dp"
-        android:layout_height="490dp"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/wa"
-        android:background="@drawable/border"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Upload Product"
-            android:fontFamily="monospace"
-            android:textColor="@color/white"
-            android:textSize="25dp" />
 
         <LinearLayout
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp">
+            android:layout_centerInParent="true"
+            android:layout_width="320dp"
+            android:layout_height="420dp"
+            android:backgroundTint="@color/wa"
+            android:background="@drawable/border"
+            android:orientation="vertical">
 
-            <EditText
-                android:backgroundTint="@color/white"
-                android:background="@drawable/shape"
-                android:id="@+id/etProductName"
-                android:textSize="14sp"
-                android:layout_centerVertical="true"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:layout_height="40dp"
-                android:hint="name"
-                android:paddingLeft="20dp"
-                android:inputType="textEmailAddress"/>
-            <EditText
-                android:backgroundTint="@color/white"
-                android:background="@drawable/shape"
-                android:id="@+id/etProductPrice"
+            <TextView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Back"
+                android:textColor="@color/white"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Upload Product"
+                android:fontFamily="monospace"
+                android:textColor="@color/white"
+                android:textSize="25dp" />
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp">
+
+                <EditText
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/shape"
+                    android:id="@+id/etProductName"
+                    android:textSize="14sp"
+                    android:layout_centerVertical="true"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:layout_height="40dp"
+                    android:hint="name"
+                    android:paddingLeft="20dp"
+                    android:inputType="textCapWords"/>
+                <EditText
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/shape"
+                    android:id="@+id/etProductPrice"
+                    android:layout_width="100dp"
+                    android:textSize="14sp"
+                    android:layout_gravity="center"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="5dp"
+                    android:textAlignment="center"
+                    android:hint="price"
+                    android:layout_centerVertical="true"
+                    android:inputType="numberDecimal"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/ivProductImage"
                 android:layout_width="100dp"
-                android:textSize="14sp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:layout_height="40dp"
-                android:layout_marginLeft="5dp"
-                android:textAlignment="center"
-                android:hint="price"
-                android:layout_centerVertical="true"
-                android:inputType="numberDecimal"/>
+                android:scaleType="centerCrop"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:contentDescription="Product Image"
+                android:background="@color/white"/>
+
+            <Button
+                android:id="@+id/btnChooseImage"
+                android:layout_width="150dp"
+                android:backgroundTint="#9ADBF8"
+                android:layout_gravity="center"
+                android:background="@drawable/border"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ivProductImage"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:textAllCaps="false"
+                android:text="Choose Image" />
+
+            <Button
+                android:id="@+id/btnUploadProduct"
+                android:layout_width="120dp"
+                android:layout_height="38dp"
+                android:textAllCaps="false"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="#66B3F6"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                android:background="@drawable/border"
+                android:text="Upload" />
+
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/ivProductImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:contentDescription="Product Image"
-            android:background="@color/white"/>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:visibility="gone"
+            android:layout_centerInParent="true"/>
 
-        <Button
-            android:id="@+id/btnChooseImage"
-            android:layout_width="150dp"
-            android:backgroundTint="#9ADBF8"
-            android:layout_gravity="center"
-            android:background="@drawable/border"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ivProductImage"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:textAllCaps="false"
-            android:text="Choose Image" />
 
-        <Button
-            android:id="@+id/btnUploadProduct"
-            android:layout_width="120dp"
-            android:layout_height="38dp"
-            android:textAllCaps="false"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="#66B3F6"
-            android:textColor="@color/white"
-            android:textSize="13sp"
-            android:background="@drawable/border"
-            android:text="Upload" />
 
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

@@ -51,7 +51,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="-40dp"
                 android:orientation="vertical"
                 android:background="#FFF3BE">
 
@@ -71,7 +71,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_gravity="center"
-                        android:text="store"
+                        android:text="Store Name"
                         android:textColor="@color/black"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="Leather shoes for women"
+                    android:text="shoe"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 
@@ -100,9 +100,12 @@
                     android:layout_width="240dp"
                     android:layout_height="50dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginBottom="20dp"/>
+                    android:layout_marginBottom="20dp"
+                    android:progressTint="#FFFF00"/>
+
 
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
     <Button
@@ -115,6 +118,7 @@
         android:background="@drawable/shape"
         android:backgroundTint="#75D2FF"
         android:layout_marginBottom="30dp"
+        android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:layout_gravity="center"/>

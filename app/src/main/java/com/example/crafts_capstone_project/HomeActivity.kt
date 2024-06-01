@@ -1,12 +1,17 @@
 package com.example.crafts_capstone_project
 
+import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.media.Image
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.SearchView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.Toast
 import androidx.compose.ui.text.capitalize
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -25,60 +31,42 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 
 class HomeActivity : AppCompatActivity() {
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var storeRecyclerView: RecyclerView
-    private lateinit var productAdapter: ProductAdapter
-    private lateinit var databaseReference: DatabaseReference
-    private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var storeAdapter: StoreAdapter
-    private val userList = mutableListOf<User>()
-    private var userEmail = ""
 
+    private lateinit var progress: ProgressBar
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_home)
-        val account = findViewById<ImageView>(R.id.account)
+        val homeBtn = findViewById<ImageView>(R.id.home)
         val dBtn = findViewById<ImageView>(R.id.design)
-        val cartBtn = findViewById<ImageView>(R.id.cart)
-        val messageBtn = findViewById<ImageView>(R.id.messages)
-        recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = GridLayoutManager(this, 3)
+        val messages = findViewById<ImageView>(R.id.messages)
+        val cart = findViewById<ImageView>(R.id.cart)
+        val account = findViewById<ImageView>(R.id.account)
 
+        fragmentDisplay(HomeFragment())
 
-        storeRecyclerView = findViewById(R.id.storeRecyclerView)
-        storeRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
-        storeAdapter = StoreAdapter(userList, this)
-        storeRecyclerView.adapter = storeAdapter
-
-        fetchStoresFromFirebase()
-
-
-        sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE)
-        val username = sharedPreferences.getString("username", null)
-        userEmail = sharedPreferences.getString("email", null).toString()
-
-        if (username == null || username.isEmpty()) {
-            // Username doesn't exist or is empty, redirect to login page
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+        homeBtn.setOnClickListener{
+            val view = findViewById<ViewGroup>(R.id.containerFragment)
+            view.removeAllViews()
+            fragmentDisplay(HomeFragment())
         }
 
-        account.setOnClickListener {
-            val intent = Intent(this, AccountActivity::class.java)
-            startActivity(intent)
+        account.setOnClickListener{
+            val view = findViewById<ViewGroup>(R.id.containerFragment)
+            view.removeAllViews()
+            fragmentDisplay(AccountFragment())
         }
 
-        messageBtn.setOnClickListener {
-            val intent = Intent(this, MessageActivity::class.java)
-            startActivity(intent)
+        cart.setOnClickListener{
+            val view = findViewById<ViewGroup>(R.id.containerFragment)
+            view.removeAllViews()
+            fragmentDisplay(CartFragment())
         }
 
-        cartBtn.setOnClickListener{
-            val intent = Intent(this, CartActivity::class.java)
-            startActivity(intent)
+        messages.setOnClickListener{
+            val view = findViewById<ViewGroup>(R.id.containerFragment)
+            view.removeAllViews()
+            fragmentDisplay(MessageFragment())
         }
 
         dBtn.setOnClickListener{
@@ -86,83 +74,11 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Fetch data from Firebase Database
-        fetchProductsFromFirebase()
-
-
-        val searchView = findViewById<SearchView>(R.id.search)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let { searchProduct(it.capitalize()) }
-                return true
-            }
-        })
     }
 
-    private fun fetchProductsFromFirebase() {
-        databaseReference = FirebaseDatabase.getInstance().getReference("products")
-        databaseReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val productList = mutableListOf<Product>()
-                for (snapshot in dataSnapshot.children) {
-                    val product = snapshot.getValue(Product::class.java)
-                    product?.let { productList.add(it) }
-                }
-                // Update RecyclerView with fetched data
-                productAdapter = ProductAdapter(productList)
-                recyclerView.adapter = productAdapter
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.e(TAG, "Database Error: ${databaseError.message}")
-            }
-        })
+    private fun fragmentDisplay(fragment: Fragment){
+        val fragmentShow = supportFragmentManager.beginTransaction()
+        fragmentShow.replace(R.id.containerFragment, fragment)
+        fragmentShow.commit()
     }
-
-    private fun fetchStoresFromFirebase() {
-        databaseReference = FirebaseDatabase.getInstance().getReference("users")
-        databaseReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val userList = mutableListOf<User>()
-                for (snapshot in dataSnapshot.children) {
-                    val user = snapshot.getValue(User::class.java)
-                    user?.let {
-                        if(it.email != userEmail){
-                            userList.add(it)
-                        }
-                    }
-                }
-                storeAdapter = StoreAdapter(userList, this@HomeActivity)
-                storeRecyclerView.adapter = storeAdapter
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.e("MainActivity", "Database Error: ${databaseError.message}")
-            }
-        })
-    }
-
-    private fun searchProduct(query: String) {
-        val queryRef = databaseReference.orderByChild("name").startAt(query).endAt(query + "\uf8ff")
-        queryRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val searchResult = mutableListOf<Product>()
-                for (snapshot in dataSnapshot.children) {
-                    val product = snapshot.getValue(Product::class.java)
-                    product?.let { searchResult.add(it) }
-                }
-                // Update RecyclerView with search results
-                productAdapter.updateData(searchResult)
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.e(TAG, "Database Error: ${databaseError.message}")
-            }
-        })
-    }
-
 }

@@ -11,5 +11,5 @@ data class Cart(
     var isSelected: Boolean = false,
 
     val storeName: String = "",
-    val storeEmail: String = "",
+    val storeEmail: String = ""
 ) : java.io.Serializable

@@ -5,7 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +28,7 @@ class OrderActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var database: FirebaseDatabase
     private lateinit var databaseReference: DatabaseReference
+    private lateinit var progressBar: ProgressBar
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +41,7 @@ class OrderActivity : AppCompatActivity() {
             Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
             return
         }
-
+        progressBar = findViewById(R.id.progressBar)
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         orders = mutableListOf()
@@ -57,6 +60,7 @@ class OrderActivity : AppCompatActivity() {
     }
 
     private fun fetchOrders(email: String) {
+        progressBar.visibility = View.VISIBLE
         databaseReference.orderByChild("email").equalTo(email)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -68,10 +72,12 @@ class OrderActivity : AppCompatActivity() {
                     }
                     // Notify the adapter that data set has changed
                     orderAdapter.notifyDataSetChanged()
+                    progressBar.visibility = View.GONE
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                     // Handle database error
+                    progressBar.visibility = View.GONE
                     Toast.makeText(this@OrderActivity, "Failed to load orders: ${error.message}", Toast.LENGTH_SHORT).show()
                 }
             })

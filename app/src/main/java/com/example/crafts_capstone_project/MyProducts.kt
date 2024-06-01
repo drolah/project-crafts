@@ -5,7 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +28,7 @@ class MyProducts : AppCompatActivity() {
     private lateinit var products: MutableList<Product>
     private lateinit var databaseReference: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var progressBar: ProgressBar
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +39,7 @@ class MyProducts : AppCompatActivity() {
         back.setOnClickListener {
             onBackPressed()
         }
-
+        progressBar = findViewById(R.id.progressBar)
         recyclerView = findViewById(R.id.myProducts)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -62,6 +65,7 @@ class MyProducts : AppCompatActivity() {
     }
 
     private fun fetchMyProducts(email: String) {
+        progressBar.visibility = View.VISIBLE
         databaseReference.orderByChild("email").equalTo(email)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -73,10 +77,12 @@ class MyProducts : AppCompatActivity() {
                     }
                     // Notify the adapter that data set has changed
                     myProductsAdapter.notifyDataSetChanged()
+                    progressBar.visibility = View.GONE
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                     // Handle database error
+                    progressBar.visibility = View.GONE
                     Toast.makeText(this@MyProducts, "Failed to load products: ${error.message}", Toast.LENGTH_SHORT).show()
                 }
             })

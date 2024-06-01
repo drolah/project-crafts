@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.PixelCopy.Request
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -34,9 +35,7 @@ class ProductQtyActivity : AppCompatActivity() {
         addTv = findViewById(R.id.addTV)
         prodQty = findViewById(R.id.pQty)
 
-
         sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE)
-
 
         val product = intent.getSerializableExtra("product") as? Product
         if (product != null) {
@@ -47,6 +46,10 @@ class ProductQtyActivity : AppCompatActivity() {
             ImageDownloaderTask(imageView).execute(product.image)
             priceTextView.text = "Php ${product.price}"
             nameTextView.text = product.productName
+        } else {
+            Toast.makeText(this, "Product not found", Toast.LENGTH_SHORT).show()
+            finish() // Finish the activity if product is not found
+            return
         }
 
         lessTv.setOnClickListener {
@@ -64,12 +67,7 @@ class ProductQtyActivity : AppCompatActivity() {
 
         val addToCart = findViewById<Button>(R.id.addToCart)
         addToCart.setOnClickListener {
-            val product = intent.getSerializableExtra("product") as? Product
-            if (product != null) {
-                saveToCart(product)
-            } else {
-                Toast.makeText(this, "Product not found", Toast.LENGTH_SHORT).show()
-            }
+            saveToCart(product)
         }
 
         val pdBack = findViewById<ImageButton>(R.id.pd_bck_btn)
@@ -112,13 +110,13 @@ class ProductQtyActivity : AppCompatActivity() {
         }
 
         val quantity = num
-        val total = product.price* quantity
+        val total = product.price * quantity.toDouble()
 
         val order = Order(
             username = username,
             email = email,
             name = product.productName,
-            price = product.price,
+            price = product.price.toDouble(),
             quantity = quantity,
             total = total,
             image = product.image,
@@ -129,7 +127,7 @@ class ProductQtyActivity : AppCompatActivity() {
         databaseReference.push().setValue(order)
             .addOnSuccessListener {
                 Toast.makeText(this, "Order Successful!", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, OrderActivity::class.java)
+                val intent = Intent(this, HomeActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
             }
@@ -138,9 +136,12 @@ class ProductQtyActivity : AppCompatActivity() {
             }
     }
 
+    private fun saveToCart(product: Product?) {
+        if (product == null) {
+            Toast.makeText(this, "Product not found", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-
-    private fun saveToCart(product: Product) {
         val username = sharedPreferences.getString("username", "")
         val email = sharedPreferences.getString("email", "")
 
@@ -148,17 +149,18 @@ class ProductQtyActivity : AppCompatActivity() {
             Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
             return
         }
+
         database = FirebaseDatabase.getInstance()
         databaseReference = database.getReference("carts")
 
         val quantity = num
-        val total = product.price * quantity
+        val total = product.price * quantity.toDouble()
 
         val cart = Cart(
             username = username,
             email = email,
             name = product.productName,
-            price = product.price,
+            price = product.price.toDouble(),
             quantity = quantity,
             total = total,
             image = product.image,
@@ -168,8 +170,8 @@ class ProductQtyActivity : AppCompatActivity() {
 
         databaseReference.push().setValue(cart)
             .addOnSuccessListener {
-                Toast.makeText(this, "Product added to cart successfully!", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, CartActivity::class.java)
+                Toast.makeText(this, "Product added to cart!", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, HomeActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
             }

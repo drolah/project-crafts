@@ -15,10 +15,9 @@ class NotificationsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_notifications)
-        val backBtn = findViewById<ImageButton>(R.id.nbackbtn)
-        backBtn.setOnClickListener {
-            intent = Intent(this, MessageActivity::class.java)
-            startActivity(intent    )
+        val nbackbtn = findViewById<ImageButton>(R.id.nbackbtn)
+        nbackbtn.setOnClickListener {
+            onBackPressed()
         }
     }
 }

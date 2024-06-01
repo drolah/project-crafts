@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".CartActivity">
-
+    tools:context=".CartFragment">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         tools:ignore="MissingConstraints">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -30,20 +26,20 @@
 
 
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_below="@id/title"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:layout_above="@id/totalFees"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_below="@id/title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:layout_above="@id/totalFees"/>
 
         <LinearLayout
             android:id="@+id/totalFees"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:orientation="vertical"
-            android:layout_above="@id/buttons"
             android:background="#FBF1C1"
             android:paddingBottom="10dp">
             <RelativeLayout
@@ -162,118 +158,11 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/buttons"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true"
-            android:background="#B8F9FB">
-            <LinearLayout
-                android:id="@+id/homes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-                <ImageView
-                    android:id="@+id/home"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:src="@drawable/img_16"
-                    android:layout_marginTop="20dp"
-                    android:layout_gravity="center"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Home"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center"
-                    android:textSize="12sp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/designs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-                <ImageView
-                    android:id="@+id/design"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:src="@drawable/img_17"
-                    android:layout_marginTop="20dp"
-                    android:layout_gravity="center"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Design"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center"
-                    android:textSize="12sp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/messages"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-                <ImageView
-                    android:id="@+id/message"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:src="@drawable/img_18"
-                    android:layout_marginTop="20dp"
-                    android:layout_gravity="center"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Message"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center"
-                    android:textSize="12sp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-                <ImageView
-                    android:id="@+id/cart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:src="@drawable/img_19"
-                    android:layout_marginTop="20dp"
-                    android:layout_gravity="center"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cart"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center"
-                    android:textSize="12sp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/accounts"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-                <ImageView
-                    android:id="@+id/account"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:src="@drawable/img_20"
-                    android:layout_marginTop="20dp"
-                    android:layout_gravity="center"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Account"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center"
-                    android:textSize="12sp"/>
-            </LinearLayout>
-        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerInParent="true"/>
     </RelativeLayout>
 
-</RelativeLayout>
+</FrameLayout>

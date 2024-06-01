@@ -5,13 +5,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.ImageView
-import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
@@ -19,8 +20,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.math.BigDecimal
+import java.math.RoundingMode
 
-class CartActivity : AppCompatActivity() {
+class CartFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var cartAdapter: CartAdapter
     private lateinit var carts: MutableList<Cart>
@@ -34,56 +37,34 @@ class CartActivity : AppCompatActivity() {
     private lateinit var checkOutBtn: TextView
     private lateinit var shippingFee: TextView
 
+    private lateinit var progressBar: ProgressBar
+
     @SuppressLint("MissingInflatedId")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_cart)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+// Inflate the layout for this fragment
+        val view = inflater.inflate(R.layout.fragment_cart, container, false)
 
         // Initialize SharedPreferences
-        sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE)
+        sharedPreferences = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE)
         val email = sharedPreferences.getString("email", null)
-
-        // Set click listeners for navigation
-        val account = findViewById<LinearLayout>(R.id.accounts)
-        account.setOnClickListener {
-            val intent = Intent(this, AccountActivity::class.java)
-            startActivity(intent)
-        }
-
-        val design = findViewById<LinearLayout>(R.id.designs)
-        design.setOnClickListener {
-            val intent = Intent(this, ToolsActivity::class.java)
-            startActivity(intent)
-        }
-
-        val home = findViewById<LinearLayout>(R.id.homes)
-        home.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-        }
-
-        val messages = findViewById<LinearLayout>(R.id.messages)
-        messages.setOnClickListener {
-            val intent = Intent(this, MessageActivity::class.java)
-            startActivity(intent)
-        }
-
-        checkBoxAll = findViewById(R.id.checkBoxAll)
-        subTotalTextView = findViewById(R.id.subTotal)
-        totalTextView = findViewById(R.id.total)
-        shippingFee = findViewById(R.id.shippingFee)
-        checkOutBtn = findViewById(R.id.checkOutAllBtn)
-
+        checkBoxAll = view.findViewById(R.id.checkBoxAll)
+        subTotalTextView = view.findViewById(R.id.subTotal)
+        totalTextView = view.findViewById(R.id.total)
+        shippingFee = view.findViewById(R.id.shippingFee)
+        checkOutBtn = view.findViewById(R.id.checkOutAllBtn)
+        progressBar = view.findViewById(R.id.progressBar)
 
         // Check if the user is logged in
         if (email == null) {
-            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
-            return
+            Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
+            return view
         }
 
-        recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView = view.findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
         carts = mutableListOf()
         cartAdapter = CartAdapter(carts) { isChecked, cart ->
             updateTotalFees()
@@ -107,13 +88,15 @@ class CartActivity : AppCompatActivity() {
         // Set checkout button click listener
         checkOutBtn.setOnClickListener {
             handleCheckout()
-            val intent = Intent(this, OrderActivity::class.java)
+            val intent = Intent(requireContext(), OrderActivity::class.java)
             startActivity(intent)
-            finish()
         }
+
+        return view
     }
 
     private fun fetchCart(email: String) {
+        progressBar.visibility = View.VISIBLE
         databaseReference.orderByChild("email").equalTo(email)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -127,27 +110,31 @@ class CartActivity : AppCompatActivity() {
                         }
                         // Notify the adapter that the data set has changed
                         cartAdapter.notifyDataSetChanged()
+                        progressBar.visibility = View.GONE
                     } else {
-                        Toast.makeText(this@CartActivity, "No items in the cart", Toast.LENGTH_SHORT).show()
+                        progressBar.visibility = View.GONE
+                        Toast.makeText(requireContext(), "No items in the cart", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                     // Handle database error
-                    Toast.makeText(this@CartActivity, "Failed to load carts: ${error.message}", Toast.LENGTH_SHORT).show()
+                    progressBar.visibility = View.GONE
+                    Toast.makeText(requireContext(), "Failed to load carts: ${error.message}", Toast.LENGTH_SHORT).show()
                 }
             })
     }
+
     private fun updateTotalFees() {
         var subTotal = 0.0
         var total = 0.0
-        var shipFee = 110.0
+        val shipFee = 110.0
         carts.forEach { cart ->
             if (cart.isSelected) {
                 subTotal += cart.price.toDouble() * cart.quantity.toDouble()
             }
         }
-        total = subTotal+shipFee // Adjust this if you have additional fees like shipping
+        total = subTotal + shipFee // Adjust this if you have additional fees like shipping
 
         subTotalTextView.text = subTotal.toString()
         totalTextView.text = total.toString()
@@ -163,7 +150,7 @@ class CartActivity : AppCompatActivity() {
         val selectedItems = carts.filter { it.isSelected }
 
         if (selectedItems.isEmpty()) {
-            Toast.makeText(this, "No items selected for checkout", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "No items selected for checkout", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -176,7 +163,7 @@ class CartActivity : AppCompatActivity() {
         val email = sharedPreferences.getString("email", "")
 
         if (username.isNullOrEmpty() || email.isNullOrEmpty()) {
-            Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -198,10 +185,10 @@ class CartActivity : AppCompatActivity() {
 
             ordersReference.push().setValue(order)
                 .addOnSuccessListener {
-                    Toast.makeText(this, "Order placed for ${cartItem.name}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Order placed for ${cartItem.name}", Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(this, "Failed to place order for ${cartItem.name}: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Failed to place order for ${cartItem.name}: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
         }
     }

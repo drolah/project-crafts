@@ -9,67 +9,11 @@
     tools:context=".HomeActivity"
     android:backgroundTint="@color/white">
 
-    <RelativeLayout
-        android:id="@+id/searchLayout"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp">
-
-        <SearchView
-            android:layout_centerHorizontal="true"
-            android:id="@+id/search"
-            android:inputType="text"
-            android:singleLine="true"
-            android:imeOptions="actionDone"
-            android:iconifiedByDefault="false"
-            android:layout_width="400dp"
-            android:layout_height="50dp"
-            android:background="@drawable/shape"
-            android:textColor="@color/black"
-            android:queryHint="Search"
-            android:layout_marginTop="12dp"
-            android:textSize="14sp"
-            android:backgroundTint="#EDE6E6"/>
-
-
-    </RelativeLayout>
-
-
-    <LinearLayout
+        android:id="@+id/containerFragment"
         android:layout_above="@id/buttons"
-        android:layout_below="@id/searchLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-
-            <LinearLayout
-                android:id="@+id/stores"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:orientation="vertical"
-                android:layout_marginBottom="10dp">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/storeRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:orientation="horizontal"
-                    android:scrollbars="horizontal"
-                    android:layout_below="@id/stores"/>
-
-            </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:layout_below="@id/stores"/>
-
-
-    </LinearLayout>
+        android:layout_height="match_parent"/>
 
 
     <LinearLayout
@@ -175,5 +119,13 @@
                 android:textSize="12sp"/>
         </LinearLayout>
     </LinearLayout>
+
+    <ProgressBar
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/progressBar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"/>
 
 </RelativeLayout>

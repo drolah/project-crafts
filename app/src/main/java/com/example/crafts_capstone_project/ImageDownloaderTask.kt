@@ -8,7 +8,11 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
-class ImageDownloaderTask(private val imageView: ImageView) : AsyncTask<String, Void, Bitmap?>() {
+class ImageDownloaderTask(
+    private val imageView: ImageView,
+    private val listener: ImageLoaderListener? = null
+) : AsyncTask<String, Void, Bitmap?>() {
+
     override fun doInBackground(vararg params: String): Bitmap? {
         val url = params[0]
         return try {
@@ -26,6 +30,11 @@ class ImageDownloaderTask(private val imageView: ImageView) : AsyncTask<String, 
     override fun onPostExecute(result: Bitmap?) {
         result?.let {
             imageView.setImageBitmap(it)
+            listener?.onImageLoaded() // Notify listener when image is loaded
         }
+    }
+
+    interface ImageLoaderListener {
+        fun onImageLoaded()
     }
 }

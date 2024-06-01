@@ -16,4 +16,10 @@
     <color name="inputBackground">#F5F5F5</color>
     <color name="receiverBubble">#E0E0E0</color>
     <color name="senderBubble">#70CEFB</color>
+    <color name="colorPrimary">#C8C7C7</color>
+    <color name="colorPrimaryDark">#8F8F8F</color>
+    <color name="colorAccent">#FFC107</color>
+    <color name="colorAccentDark">#FF9800</color>
+    <color name="colorProfile">#00A7F4</color>
+    <color name="semiDark">#262729</color>
 </resources>

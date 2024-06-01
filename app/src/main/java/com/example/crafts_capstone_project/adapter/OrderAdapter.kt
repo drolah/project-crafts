@@ -1,4 +1,4 @@
-package com.example.crafts_capstone_project
+package com.example.crafts_capstone_project.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,8 +6,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.crafts_capstone_project.ImageDownloaderTask
+import com.example.crafts_capstone_project.data.Order
+import com.example.crafts_capstone_project.R
 
-class SellersOrderAdapter(private val orders: List<Order>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class OrderAdapter(private val orders: List<Order>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val VIEW_TYPE_ORDER = 1
@@ -20,7 +23,7 @@ class SellersOrderAdapter(private val orders: List<Order>) : RecyclerView.Adapte
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_ORDER) {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.seller_layout, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.order_layout, parent, false)
             OrderViewHolder(view)
         } else {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.empty_order_layout, parent, false)
@@ -36,7 +39,6 @@ class SellersOrderAdapter(private val orders: List<Order>) : RecyclerView.Adapte
                 price.text = "P ${order.price}"
                 quantity.text = order.quantity.toString()
                 total.text = order.total.toString()
-                customerName.text = order.username
 
                 ImageDownloaderTask(image).execute(order.image)
             }
@@ -53,7 +55,6 @@ class SellersOrderAdapter(private val orders: List<Order>) : RecyclerView.Adapte
         val quantity: TextView = itemView.findViewById(R.id.qty)
         val total: TextView = itemView.findViewById(R.id.total)
         val image: ImageView = itemView.findViewById(R.id.image)
-        val customerName: TextView = itemView.findViewById(R.id.customerName)
     }
 
     class EmptyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

@@ -1,4 +1,4 @@
-package com.example.crafts_capstone_project
+package com.example.crafts_capstone_project.data
 
 data class Product(
     val email: String = "",

@@ -1,16 +1,12 @@
-package com.example.crafts_capstone_project
+package com.example.crafts_capstone_project.adapter
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import java.text.SimpleDateFormat
-import java.util.Date
+import com.example.crafts_capstone_project.Message
+import com.example.crafts_capstone_project.R
 
 
 class MessageAdapter(private val messages: List<Message>, private val userEmail: String) :

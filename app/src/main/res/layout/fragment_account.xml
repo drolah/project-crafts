@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AccountFragment">
+    tools:context=".fragments.AccountFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,7 +17,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#B8F9FB">
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/currentProfileImage"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_margin="20dp"

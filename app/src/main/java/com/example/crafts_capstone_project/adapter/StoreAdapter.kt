@@ -1,4 +1,4 @@
-package com.example.crafts_capstone_project
+package com.example.crafts_capstone_project.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.crafts_capstone_project.MessengerActivity
+import com.example.crafts_capstone_project.R
+import com.example.crafts_capstone_project.data.User
 
 class StoreAdapter(private var userList: MutableList<User>, private val context: Context) : RecyclerView.Adapter<StoreAdapter.StoreViewHolder>() {
     private lateinit var sharedPreferences: SharedPreferences

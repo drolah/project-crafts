@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import com.example.crafts_capstone_project.models.Users
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -60,30 +61,34 @@ class MainActivity : ComponentActivity() {
                     if (task.isSuccessful) {
                         // Get user ID
                         val userId = auth.currentUser?.uid
-
                         // Retrieve username from Realtime Database
                         userId?.let { uid ->
                             database.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                                    val userData = dataSnapshot.value as Map<*, *>
-                                    val username = userData["username"] as String
-                                    // Save username in SharedPreferences
-                                    saveUsername(username, emailText, passwordText)
+                                    if (dataSnapshot.exists()) {
+                                        val userData = dataSnapshot.value as Map<*, *>
+                                        val username = userData["username"] as String
+                                        val userInfo = dataSnapshot.getValue(Users::class.java)
+                                        userInfo?.let {
+                                            // Save username in SharedPreferences
+                                            saveUsername(username, emailText, passwordText)
 
-                                    database.child(uid).child("isOnline").setValue(true).addOnCompleteListener { updateTask ->
-                                        if (updateTask.isSuccessful) {
-                                            // Start HomeActivity
-                                            val intent = Intent(this@MainActivity, HomeActivity::class.java)
-                                            startActivity(intent)
-                                            finish()
-                                        } else {
-                                            Toast.makeText(this@MainActivity, "Failed to update online status", Toast.LENGTH_SHORT).show()
+                                            database.child(uid).child("isOnline").setValue(true).addOnCompleteListener { updateTask ->
+                                                if (updateTask.isSuccessful) {
+                                                    // Start HomeActivity
+                                                    isUserLoggedIn()
+                                                    val intent = Intent(this@MainActivity, HomeActivity::class.java)
+                                                    startActivity(intent)
+                                                    finish()
+                                                } else {
+                                                    Toast.makeText(this@MainActivity, "Failed to update online status", Toast.LENGTH_SHORT).show()
+                                                }
+                                            }
                                         }
+                                    } else {
+                                        // If the user is not found in the database
+                                        Toast.makeText(this@MainActivity, "User not found", Toast.LENGTH_SHORT).show()
                                     }
-                                    // Start HomeActivity
-                                    val intent = Intent(this@MainActivity, HomeActivity::class.java)
-                                    startActivity(intent)
-                                    finish()
                                 }
 
                                 override fun onCancelled(databaseError: DatabaseError) {
@@ -123,7 +128,6 @@ class MainActivity : ComponentActivity() {
         editor.putString("username", username)
         editor.putString("email", email)
         editor.putString("password", password)
-
         editor.apply()
     }
 }

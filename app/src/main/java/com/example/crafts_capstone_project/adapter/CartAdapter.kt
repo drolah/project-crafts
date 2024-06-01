@@ -1,15 +1,15 @@
-package com.example.crafts_capstone_project
+package com.example.crafts_capstone_project.adapter
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.compose.material3.Checkbox
 import androidx.recyclerview.widget.RecyclerView
+import com.example.crafts_capstone_project.data.Cart
+import com.example.crafts_capstone_project.ImageDownloaderTask
+import com.example.crafts_capstone_project.R
 
 class CartAdapter(
     private val carts: List<Cart>,

@@ -51,12 +51,16 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "**/INotificationSideChannel. class"
         }
     }
 }
 
 dependencies {
-
+    implementation(libs.androidx.core.ktx) {
+        // Exclude support-v4 from androidx.core:core-ktx
+        exclude(group = "androidx.legacy", module = "legacy-support-v4")
+    }
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -73,6 +77,17 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.storage)
     implementation(libs.firebase.messaging)
+    implementation(libs.sdp.android)
+    implementation(libs.ssp.android)
+    implementation(libs.roundedimageview)
+    implementation(libs.circleimageview)
+    implementation(libs.picasso)
+    implementation(libs.cardview)
+    implementation(libs.materialedittext)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

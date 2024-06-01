@@ -1,4 +1,4 @@
-package com.example.crafts_capstone_project
+package com.example.crafts_capstone_project.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -15,13 +15,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.crafts_capstone_project.data.Cart
+import com.example.crafts_capstone_project.adapter.CartAdapter
+import com.example.crafts_capstone_project.data.Order
+import com.example.crafts_capstone_project.OrderActivity
+import com.example.crafts_capstone_project.R
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import java.math.BigDecimal
-import java.math.RoundingMode
 
 class CartFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView

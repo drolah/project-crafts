@@ -16,19 +16,23 @@
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".VisitUserProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ViewFullImageActivity"
+            android:exported="false" />
+        <activity
             android:name=".MyProducts"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".SellersOrder"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".UploadProductActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".SignupActivity"
             android:exported="true" />
@@ -54,21 +58,8 @@
             android:name=".MessengerActivity"
             android:exported="true" />
         <activity
-            android:name=".MessageActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ChatActivity"
-            android:exported="true" />
-        <activity
-            android:name=".CartActivity"
-            android:exported="true" />
-        <activity
-            android:name=".AccountActivity"
-            android:exported="true" />
-        <activity
             android:name=".HomeActivity"
             android:exported="true" />
-
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".ChatActivity"
-    android:fitsSystemWindows="true">
+    android:orientation="vertical"
+    tools:context=".ChatActivity">
 
     <LinearLayout
         android:id="@+id/header"
@@ -17,13 +16,15 @@
 
         <ImageButton
             android:id="@+id/back"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/img_21"
             android:backgroundTint="@color/black"
-            android:contentDescription="@android:string/untitled" />
+            android:contentDescription="@android:string/untitled"
+            tools:ignore="TouchTargetSizeCheck" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,26 +32,50 @@
             android:layout_gravity="center_vertical"
             android:text="Chats"
             android:textSize="18sp"
-            android:textColor="@color/black"/>
-
+            android:textColor="@color/black" />
     </LinearLayout>
 
-    <SearchView
-        android:layout_below="@id/header"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/search"
-        android:inputType="text"
-        android:singleLine="true"
-        android:imeOptions="actionDone"
-        android:iconifiedByDefault="false"
-        android:layout_width="400dp"
-        android:layout_height="50dp"
-        android:background="@drawable/shape"
-        android:textColor="@color/black"
-        android:queryHint="Search"
-        android:layout_marginTop="12dp"
-        android:textSize="14sp"
-        android:backgroundTint="#EDE6E6"/>
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_main"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
-</RelativeLayout>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/img_20"
+                android:tint="@android:color/white" />
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="username"
+                android:textSize="18sp"
+                android:textColor="@color/semiDark"
+                android:layout_marginLeft="25dp"
+                android:textStyle="bold" />
+        </com.google.android.material.appbar.MaterialToolbar>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@android:string/untitled"
+            android:background="@color/colorAccent"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@android:string/untitled" />
+</LinearLayout>

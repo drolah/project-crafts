@@ -2,84 +2,110 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/main_layout_messenger"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".MessengerActivity">
 
-    <LinearLayout
-        android:id="@+id/headings"
+    <!-- App Bar Layout -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout_messenger"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:orientation="horizontal"
-        android:background="@color/primaryColor"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:gravity="center_vertical">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <ImageButton
-            android:id="@+id/back"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@null"
-            android:src="@drawable/img_21"
-            android:scaleType="centerInside"
-            android:layout_marginEnd="16dp" />
-
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/img_20"
-            android:layout_marginEnd="16dp" />
-
-        <TextView
-            android:id="@+id/receiverName"
-            android:layout_width="wrap_content"
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_messenger"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/textColor"
-            android:textSize="15sp"
-            android:fontFamily="monospace"
-            android:textStyle="bold" />
-    </LinearLayout>
+            android:background="@color/primaryColor"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
+            <!-- Back Button -->
+            <ImageButton
+                android:id="@+id/back_button_messenger"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/img_14"
+                android:contentDescription="back_button_description"
+                tools:ignore="TouchTargetSizeCheck"/>
+
+            <!-- User Profile Image -->
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/user_profile_image_messenger"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/img_31"/>
+
+            <!-- Username -->
+            <TextView
+                android:id="@+id/username_messenger"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:text="default_username"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- RecyclerView for Chat Messages -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/messages"
-        android:layout_below="@id/headings"
+        android:id="@+id/recycler_view_chat_messages"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/chatBox"
-        android:layout_margin="16dp">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_below="@id/app_bar_layout_messenger"
+        android:layout_above="@id/relative_layout_bottom"
+        android:background="@color/white"/>
 
-    <LinearLayout
-        android:id="@+id/chatBox"
+    <!-- Bottom Layout for Message Input -->
+    <RelativeLayout
+        android:id="@+id/relative_layout_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:padding="8dp"
-        android:background="@color/backgroundColor"
-        android:elevation="4dp">
+        android:padding="6dp">
 
-        <EditText
-            android:id="@+id/messageInput"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Enter your message"
-            android:padding="12dp"
-            android:capitalize="sentences"
-            android:background="@drawable/shape_input"
-            android:layout_marginEnd="8dp" />
-
-        <ImageView
-            android:id="@+id/sendButton"
+        <!-- Attach File Button -->
+        <ImageButton
+            android:id="@+id/attach_file_button_messenger"
             android:layout_width="40dp"
-            android:layout_height="30dp"
-            android:src="@drawable/img_30"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="@android:string/untitled" />
-    </LinearLayout>
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/img_42"
+            android:contentDescription="attach_file_button_description"
+            tools:ignore="TouchTargetSizeCheck" />
 
+        <!-- Message Input Field -->
+        <EditText
+            android:id="@+id/message_input_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_toRightOf="@id/attach_file_button_messenger"
+            android:layout_toLeftOf="@id/send_message_button"
+            android:background="@android:color/transparent"
+            android:hint="Write a message here..."
+            android:minHeight="48dp"
+            tools:ignore="UnknownId" />
+
+        <!-- Send Message Button -->
+        <ImageButton
+            android:id="@+id/send_message_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/img_30"
+            android:contentDescription="send_message_button_description"
+            tools:ignore="TouchTargetSizeCheck" />
+    </RelativeLayout>
 </RelativeLayout>

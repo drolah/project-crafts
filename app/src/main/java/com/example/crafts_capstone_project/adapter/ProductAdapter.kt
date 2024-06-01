@@ -1,14 +1,16 @@
-package com.example.crafts_capstone_project
+package com.example.crafts_capstone_project.adapter
 
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.crafts_capstone_project.ImageDownloaderTask
+import com.example.crafts_capstone_project.data.Product
+import com.example.crafts_capstone_project.ProductDisplayActivity
+import com.example.crafts_capstone_project.R
 
 class ProductAdapter(
     private var productList: List<Product>,

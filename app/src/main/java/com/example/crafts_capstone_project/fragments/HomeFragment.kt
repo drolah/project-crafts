@@ -1,4 +1,4 @@
-package com.example.crafts_capstone_project
+package com.example.crafts_capstone_project.fragments
 
 import android.content.ContentValues
 import android.content.Context
@@ -12,10 +12,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.SearchView
-import androidx.compose.ui.text.capitalize
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.crafts_capstone_project.MainActivity
+import com.example.crafts_capstone_project.data.Product
+import com.example.crafts_capstone_project.adapter.ProductAdapter
+import com.example.crafts_capstone_project.R
+import com.example.crafts_capstone_project.adapter.StoreAdapter
+import com.example.crafts_capstone_project.data.User
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference

@@ -1,7 +1,9 @@
 package com.example.crafts_capstone_project
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Patterns
@@ -14,13 +16,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.crafts_capstone_project.databinding.ActivitySignupBinding
+import com.example.crafts_capstone_project.models.Users
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.util.regex.Pattern
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var userRef: DatabaseReference
+    private var userId: String = ""
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +40,7 @@ class SignupActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance()
+        sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE)
 
         val login = findViewById<TextView>(R.id.login)
         val signup = findViewById<Button>(R.id.signup)
@@ -67,29 +79,49 @@ class SignupActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Sign up user with Firebase Authentication
-            auth.createUserWithEmailAndPassword(emailText, passwordText)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        val userId = auth.currentUser?.uid
-                        userId?.let {
-                            // Save user data to Realtime Database
-                            val userRef = database.getReference("users").child(it)
-                            val userData = HashMap<String, Any>()
-                            userData["username"] = usernameText
-                            userData["email"] = emailText
-                            userData["isOnline"] = false
-                            userRef.setValue(userData)
-
-                            Toast.makeText(this, "Sign up successful", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
+            // Check if username already exists
+            database.reference.child("users").orderByChild("username").equalTo(usernameText)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            Toast.makeText(this@SignupActivity, "Username already exists", Toast.LENGTH_SHORT).show()
+                        } else {
+                            // Sign up user with Firebase Authentication
+                            auth.createUserWithEmailAndPassword(emailText, passwordText)
+                                .addOnCompleteListener(this@SignupActivity) { task ->
+                                    if (task.isSuccessful) {
+                                        userId = auth.currentUser!!.uid
+                                        // Save user data to Realtime Database
+                                        userRef = database.reference.child("users").child(userId)
+                                        val userData = HashMap<String, Any>()
+                                        userData["userId"] = userId
+                                        userData["username"] = usernameText
+                                        userData["email"] = emailText
+                                        userData["isOnline"] = false
+                                        userData["profile"] = "https://firebasestorage.googleapis.com/v0/b/it-sysarch32-78625-activ-e8685.appspot.com/o/partialImage%2Fuser-profile-icon-vector-avatar-600nw-2247726673.webp?alt=media&token=ef4828bb-7d33-4881-b337-d13e98b0f832"
+                                        userData["search"] = usernameText.lowercase()
+                                        userData["password"] = passwordText
+                                        userRef.updateChildren(userData).addOnCompleteListener { saveTask ->
+                                            if (saveTask.isSuccessful) {
+                                                Toast.makeText(this@SignupActivity, "Sign up successful", Toast.LENGTH_SHORT).show()
+                                                val intent = Intent(this@SignupActivity, MainActivity::class.java)
+                                                startActivity(intent)
+                                                finish()
+                                            } else {
+                                                Toast.makeText(this@SignupActivity, "Failed to save user data", Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
+                                    } else {
+                                        Toast.makeText(this@SignupActivity, "Failed to create account!", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
                         }
-                    } else {
-                        Toast.makeText(this, "Failed to create account!", Toast.LENGTH_SHORT).show()
                     }
-                }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Toast.makeText(this@SignupActivity, "Database error: ${error.message}", Toast.LENGTH_SHORT).show()
+                    }
+                })
         }
     }
 

@@ -12,8 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.crafts_capstone_project.MessengerActivity
 import com.example.crafts_capstone_project.R
 import com.example.crafts_capstone_project.data.User
+import com.example.crafts_capstone_project.models.Users
 
-class StoreAdapter(private var userList: MutableList<User>, private val context: Context) : RecyclerView.Adapter<StoreAdapter.StoreViewHolder>() {
+class StoreAdapter(private var userList: List<Users>, private val context: Context) : RecyclerView.Adapter<StoreAdapter.StoreViewHolder>() {
     private lateinit var sharedPreferences: SharedPreferences
 
     init {
@@ -25,21 +26,14 @@ class StoreAdapter(private var userList: MutableList<User>, private val context:
     }
 
     override fun onBindViewHolder(holder: StoreViewHolder, position: Int) {
-        val user = userList[position]
-        val username = sharedPreferences.getString("username", null)
-        val email = sharedPreferences.getString("email", null)
+        val user: Users = userList[position]
 
-        if (user.username != username && user.email != email) {
-            holder.storeName.text = user.username
+            holder.storeName.text = user.getUserName()
             holder.itemView.setOnClickListener {
                 // Open chat with this user
                 val intent = Intent(context, MessengerActivity::class.java)
-                intent.putExtra("senderUsername", username)
-                intent.putExtra("senderEmail", email)
-                intent.putExtra("receiverUsername", user.username)
-                intent.putExtra("receiverEmail", user.email)
+                intent.putExtra("visits_id", user.getUserID())
                 context.startActivity(intent)
-            }
         }
     }
 

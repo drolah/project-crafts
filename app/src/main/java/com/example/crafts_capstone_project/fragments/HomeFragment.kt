@@ -21,6 +21,7 @@ import com.example.crafts_capstone_project.adapter.ProductAdapter
 import com.example.crafts_capstone_project.R
 import com.example.crafts_capstone_project.adapter.StoreAdapter
 import com.example.crafts_capstone_project.data.User
+import com.example.crafts_capstone_project.models.Users
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -34,7 +35,7 @@ class HomeFragment : Fragment() {
     private lateinit var databaseReference: DatabaseReference
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var storeAdapter: StoreAdapter
-    private val userList = mutableListOf<User>()
+    private val userList = mutableListOf<Users>()
     private var userEmail = ""
     private lateinit var progressBar: ProgressBar
 
@@ -118,9 +119,9 @@ class HomeFragment : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 userList.clear()
                 for (snapshot in dataSnapshot.children) {
-                    val user = snapshot.getValue(User::class.java)
+                    val user = snapshot.getValue(Users::class.java)
                     user?.let {
-                        if (it.email != userEmail) {
+                        if (user.getEmail() != userEmail) {
                             userList.add(it)
                         }
                     }

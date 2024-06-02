@@ -100,7 +100,6 @@ class SignupActivity : AppCompatActivity() {
                                         userData["isOnline"] = false
                                         userData["profile"] = "https://firebasestorage.googleapis.com/v0/b/it-sysarch32-78625-activ-e8685.appspot.com/o/partialImage%2Fuser-profile-icon-vector-avatar-600nw-2247726673.webp?alt=media&token=ef4828bb-7d33-4881-b337-d13e98b0f832"
                                         userData["search"] = usernameText.lowercase()
-                                        userData["password"] = passwordText
                                         userRef.updateChildren(userData).addOnCompleteListener { saveTask ->
                                             if (saveTask.isSuccessful) {
                                                 Toast.makeText(this@SignupActivity, "Sign up successful", Toast.LENGTH_SHORT).show()

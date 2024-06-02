@@ -173,7 +173,7 @@ class ChatsAdapter(
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val chat = mChatsList[position]
-                    val user = Users(chat.getReceiver(), "", "", true, "", "", "") // Create a User object, adjust parameters as needed
+                    val user = Users(chat.getReceiver(), "", "", true, "", "")
                     onUserClickListener?.invoke(user)
                 }
             }

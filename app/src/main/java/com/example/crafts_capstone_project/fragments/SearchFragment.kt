@@ -100,7 +100,8 @@ class SearchFragment : Fragment() {
                         // Exclude the current user's data from appearing in search
                         if (user!!.getUserID() != firebaseUserId) {
                             (mUsers as ArrayList<Users>).add(user)
-                    }
+
+                        }
                 }
                 userAdapter = context?.let { UserAdapter(it, mUsers!!, false) }
                 recyclerSearchView!!.adapter = userAdapter

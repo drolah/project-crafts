@@ -27,10 +27,15 @@ class VisitUserProfileActivity : AppCompatActivity() {
         var userNameDisplay: TextView
         var userProfileImage: CircleImageView
         var userEmailDisplay: TextView
+        var msgBtn: Button
 
         userNameDisplay = findViewById(R.id.username_display)
         userProfileImage = findViewById(R.id.profile_display)
         userEmailDisplay = findViewById(R.id.email_display)
+        msgBtn = findViewById(R.id.btn_msg)
+
+
+
 
         userVisitId = intent.getStringExtra("visits_id")
         val ref = FirebaseDatabase.getInstance().getReference("users").child(userVisitId!!)
@@ -56,5 +61,10 @@ class VisitUserProfileActivity : AppCompatActivity() {
             }
 
         })
+        msgBtn.setOnClickListener {
+            val intent = Intent(this@VisitUserProfileActivity, MessengerActivity::class.java)
+            intent.putExtra("visits_id", userVisitId)
+            startActivity(intent)
+        }
     }
 }

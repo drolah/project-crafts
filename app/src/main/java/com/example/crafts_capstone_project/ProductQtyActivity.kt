@@ -110,9 +110,11 @@ class ProductQtyActivity : AppCompatActivity() {
         }
 
         val quantity = num
+        val orderId = databaseReference.push().key ?: return
         val total = product.price * quantity.toDouble()
 
         val order = Order(
+            orderId = orderId,
             username = username,
             email = email,
             name = product.productName,
@@ -124,7 +126,7 @@ class ProductQtyActivity : AppCompatActivity() {
             storeName = product.userName
         )
 
-        databaseReference.push().setValue(order)
+        databaseReference.child(orderId).setValue(order)
             .addOnSuccessListener {
                 Toast.makeText(this, "Order Successful!", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, HomeActivity::class.java)
@@ -135,6 +137,7 @@ class ProductQtyActivity : AppCompatActivity() {
                 Toast.makeText(this, "Order Failed: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
 
     private fun saveToCart(product: Product?) {
         if (product == null) {

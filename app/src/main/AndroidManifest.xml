@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -16,14 +17,20 @@
         android:theme="@style/Theme.Design.Light.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".VisitUserProfileActivity"
+            android:name=".UpdateProductActivity"
             android:exported="false" />
         <activity
-            android:name=".ChatActivity"
+            android:name=".PaymentActivity"
             android:exported="false" />
+        <activity
+            android:name=".VisitUserProfileActivity"
+            android:exported="true" />
         <activity
             android:name=".ViewFullImageActivity"
-            android:exported="false" />
+            android:exported="true" />
+        <activity
+            android:name=".ChatActivity"
+            android:exported="true" />
         <activity
             android:name=".MyProducts"
             android:exported="true" />
@@ -46,7 +53,7 @@
             android:name=".ProductDisplayActivity"
             android:exported="true" />
         <activity
-            android:name=".OrderStatus"
+            android:name=".OrderStatusActivity"
             android:exported="true" />
         <activity
             android:name=".OrderActivity"

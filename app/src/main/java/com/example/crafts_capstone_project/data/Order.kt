@@ -1,6 +1,7 @@
 package com.example.crafts_capstone_project.data
 
 data class Order(
+    val orderId: String = "",
     val username: String = "",
     val email: String = "",
     val name: String = "",
@@ -11,3 +12,4 @@ data class Order(
     val storeEmail: String = "",
     val image: String = ""
 ) : java.io.Serializable
+

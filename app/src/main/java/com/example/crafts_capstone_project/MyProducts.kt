@@ -56,7 +56,7 @@ class MyProducts : AppCompatActivity() {
         products = mutableListOf()
 
         // Initialize ProductAdapter and set it to recyclerView
-        myProductsAdapter = MyProductsAdapter(products)
+        myProductsAdapter = MyProductsAdapter(this, products)
         recyclerView.adapter = myProductsAdapter
 
         fetchMyProducts(email)

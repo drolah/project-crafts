@@ -18,7 +18,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.crafts_capstone_project.MainActivity
 import com.example.crafts_capstone_project.MyProducts
-import com.example.crafts_capstone_project.OrderStatus
+import com.example.crafts_capstone_project.OrderStatusActivity
 import com.example.crafts_capstone_project.R
 import com.example.crafts_capstone_project.SellersOrder
 import com.example.crafts_capstone_project.UploadProductActivity
@@ -157,26 +157,56 @@ class AccountFragment : Fragment() {
         }
 
         pay.setOnClickListener {
-            val intent = Intent(requireContext(), OrderStatus::class.java)
+            val intent = Intent(requireContext(), OrderStatusActivity::class.java)
             startActivity(intent)
         }
 
         ship.setOnClickListener {
-            val intent = Intent(requireContext(), OrderStatus::class.java)
+            val intent = Intent(requireContext(), OrderStatusActivity::class.java)
             startActivity(intent)
         }
 
         receive.setOnClickListener {
-            val intent = Intent(requireContext(), OrderStatus::class.java)
+            val intent = Intent(requireContext(), OrderStatusActivity::class.java)
             startActivity(intent)
         }
 
         returns.setOnClickListener {
-            val intent = Intent(requireContext(), OrderStatus::class.java)
+            val intent = Intent(requireContext(), OrderStatusActivity::class.java)
             startActivity(intent)
         }
 
         return view
+    }
+    private fun fetchOrderStatus(action: String) {
+        val databaseReference = FirebaseDatabase.getInstance().reference.child("orderStatus")
+        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    for (orderSnapshot in snapshot.children) {
+                        val orderId = orderSnapshot.key // Get the orderId
+                        val productName = orderSnapshot.child("productName").getValue(String::class.java) // Get the productName
+                        val totalAmount = orderSnapshot.child("totalAmount").getValue(Double::class.java) // Get the totalAmount
+
+                        // Pass the data to the OrderStatusActivity
+                        val intent = Intent(requireContext(), OrderStatusActivity::class.java).apply {
+                            putExtra("orderId", orderId)
+                            putExtra("productName", productName)
+                            putExtra("totalAmount", totalAmount)
+                            putExtra("action", action) // Add the action
+                        }
+                        startActivity(intent)
+                        return
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "No order found", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(requireContext(), "Failed to fetch order details: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
     private fun pickImage() {
         val intent = Intent()

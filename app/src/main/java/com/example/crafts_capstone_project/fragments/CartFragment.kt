@@ -39,7 +39,6 @@ class CartFragment : Fragment() {
     private lateinit var totalTextView: TextView
     private lateinit var checkOutBtn: TextView
     private lateinit var shippingFee: TextView
-
     private lateinit var progressBar: ProgressBar
 
     @SuppressLint("MissingInflatedId")
@@ -47,7 +46,7 @@ class CartFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-// Inflate the layout for this fragment
+        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_cart, container, false)
 
         // Initialize SharedPreferences
@@ -174,7 +173,9 @@ class CartFragment : Fragment() {
         val ordersReference = FirebaseDatabase.getInstance().getReference("orders")
 
         selectedItems.forEach { cartItem ->
+            val orderId = ordersReference.push().key ?: return@forEach
             val order = Order(
+                orderId = orderId,
                 username = username,
                 email = email,
                 name = cartItem.name,
@@ -186,7 +187,7 @@ class CartFragment : Fragment() {
                 storeEmail = cartItem.storeEmail
             )
 
-            ordersReference.push().setValue(order)
+            ordersReference.child(orderId).setValue(order)
                 .addOnSuccessListener {
                     Toast.makeText(requireContext(), "Order placed for ${cartItem.name}", Toast.LENGTH_SHORT).show()
                 }

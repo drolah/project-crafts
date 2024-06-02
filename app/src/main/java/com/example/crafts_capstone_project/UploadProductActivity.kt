@@ -96,55 +96,55 @@ class UploadProductActivity : AppCompatActivity() {
     }
 
     private fun uploadProduct() {
-        val productName = etProductName.text.toString().trim()
-        val productPrice = etProductPrice.text.toString().trim().toDoubleOrNull()
+            val productName = etProductName.text.toString().trim()
+            val productPrice = etProductPrice.text.toString().trim().toDoubleOrNull()
 
-        if (productName.isEmpty() || productPrice == null || imageUri == null) {
-            // Handle error: show a message to the user
-            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
-            return
-        }
+            if (productName.isEmpty() || productPrice == null || imageUri == null) {
+                // Handle error: show a message to the user
+                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                return
+            }
 
-        progressBar.visibility = View.VISIBLE
+            progressBar.visibility = View.VISIBLE
 
-        // Upload image to Firebase Storage
-        val imageRef = storageReference.child("product_images/${UUID.randomUUID()}.jpg")
-        imageRef.putFile(imageUri!!)
-            .addOnSuccessListener { taskSnapshot ->
-                imageRef.downloadUrl.addOnSuccessListener { uri ->
-                    // Get the download URL for the uploaded image
-                    val imageUrl = uri.toString()
+            // Upload image to Firebase Storage
+            val imageRef = storageReference.child("product_images/${UUID.randomUUID()}.jpg")
+            imageRef.putFile(imageUri!!)
+                .addOnSuccessListener { taskSnapshot ->
+                    imageRef.downloadUrl.addOnSuccessListener { uri ->
+                        // Get the download URL for the uploaded image
+                        val imageUrl = uri.toString()
 
-                    // Create a new product object
-                    val product = Product(
-                        email = userEmail,
-                        userName = userName,
-                        productName = productName,
-                        image = imageUrl,
-                        price = productPrice
-                    )
+                        // Create a new product object
+                        val product = Product(
+                            email = userEmail,
+                            userName = userName,
+                            productName = productName,
+                            image = imageUrl,
+                            price = productPrice
+                        )
 
-                    // Save product to Firebase Realtime Database
-                    val productId = database.child("products").push().key
-                    if (productId != null) {
-                        database.child("products").child(productId).setValue(product)
-                            .addOnSuccessListener {
-                                progressBar.visibility = View.GONE
-                                Toast.makeText(this, "Product uploaded successfully", Toast.LENGTH_SHORT).show()
-                                // Redirect to another activity if needed
-                                val intent = Intent(this, HomeActivity::class.java)
-                                startActivity(intent)
-                            }
-                            .addOnFailureListener {
-                                progressBar.visibility = View.GONE
-                                Toast.makeText(this, "Failed to upload product", Toast.LENGTH_SHORT).show()
-                            }
+                        // Save product to Firebase Realtime Database
+                        val productId = database.child("products").push().key
+                        if (productId != null) {
+                            database.child("products").child(productId).setValue(product)
+                                .addOnSuccessListener {
+                                    progressBar.visibility = View.GONE
+                                    Toast.makeText(this, "Product uploaded successfully", Toast.LENGTH_SHORT).show()
+                                    // Redirect to another activity if needed
+                                    val intent = Intent(this, HomeActivity::class.java)
+                                    startActivity(intent)
+                                }
+                                .addOnFailureListener {
+                                    progressBar.visibility = View.GONE
+                                    Toast.makeText(this, "Failed to upload product", Toast.LENGTH_SHORT).show()
+                                }
+                        }
                     }
                 }
-            }
-            .addOnFailureListener {
-                progressBar.visibility = View.GONE
-                Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
-            }
+                .addOnFailureListener {
+                    progressBar.visibility = View.GONE
+                    Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
+                }
     }
 }

@@ -9,8 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.crafts_capstone_project.ImageDownloaderTask
 import com.example.crafts_capstone_project.data.Order
 import com.example.crafts_capstone_project.R
+import com.squareup.picasso.Picasso
 
-class OrderAdapter(private val orders: List<Order>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+interface OrderClickListener {
+    fun onOrderClicked(order: Order)
+}
+
+class OrderAdapter(private val orders: List<Order>, private val listener: OrderClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val VIEW_TYPE_ORDER = 1
@@ -39,8 +44,11 @@ class OrderAdapter(private val orders: List<Order>) : RecyclerView.Adapter<Recyc
                 price.text = "P ${order.price}"
                 quantity.text = order.quantity.toString()
                 total.text = order.total.toString()
+                Picasso.get().load(order.image).into(image)
 
-                ImageDownloaderTask(image).execute(order.image)
+                itemView.setOnClickListener {
+                    listener.onOrderClicked(order)
+                }
             }
         }
     }

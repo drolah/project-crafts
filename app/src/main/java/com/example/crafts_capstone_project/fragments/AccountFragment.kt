@@ -62,10 +62,6 @@ class AccountFragment : Fragment() {
         val username = view.findViewById<TextView>(R.id.accountName)
         profilePic = view.findViewById(R.id.currentProfileImage)
         val firebaseUser: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
-        if (firebaseUser.uid.isEmpty()) {
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            startActivity(intent)
-        }
         val refUsers = FirebaseDatabase.getInstance().getReference("users").child(firebaseUser.uid)
         refUsers.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

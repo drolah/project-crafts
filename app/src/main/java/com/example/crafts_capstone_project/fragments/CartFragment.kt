@@ -168,10 +168,7 @@ class CartFragment : Fragment() {
             Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
             return
         }
-
-        // Get a reference to the orders node in Firebase
         val ordersReference = FirebaseDatabase.getInstance().getReference("orders")
-
         selectedItems.forEach { cartItem ->
             val orderId = ordersReference.push().key ?: return@forEach
             val order = Order(

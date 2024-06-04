@@ -100,22 +100,15 @@ class UploadProductActivity : AppCompatActivity() {
             val productPrice = etProductPrice.text.toString().trim().toDoubleOrNull()
 
             if (productName.isEmpty() || productPrice == null || imageUri == null) {
-                // Handle error: show a message to the user
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
                 return
             }
-
             progressBar.visibility = View.VISIBLE
-
-            // Upload image to Firebase Storage
             val imageRef = storageReference.child("product_images/${UUID.randomUUID()}.jpg")
             imageRef.putFile(imageUri!!)
                 .addOnSuccessListener { taskSnapshot ->
                     imageRef.downloadUrl.addOnSuccessListener { uri ->
-                        // Get the download URL for the uploaded image
                         val imageUrl = uri.toString()
-
-                        // Create a new product object
                         val product = Product(
                             email = userEmail,
                             userName = userName,
@@ -123,8 +116,6 @@ class UploadProductActivity : AppCompatActivity() {
                             image = imageUrl,
                             price = productPrice
                         )
-
-                        // Save product to Firebase Realtime Database
                         val productId = database.child("products").push().key
                         if (productId != null) {
                             database.child("products").child(productId).setValue(product)

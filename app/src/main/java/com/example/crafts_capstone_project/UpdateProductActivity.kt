@@ -85,9 +85,7 @@ class UpdateProductActivity : AppCompatActivity() {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
             return
         }
-
         progressBar.visibility = View.VISIBLE
-
         if (selectedImageUri != null) {
             val imageRef = storageReference.child("product_images/${UUID.randomUUID()}.jpg")
             imageRef.putFile(selectedImageUri!!)

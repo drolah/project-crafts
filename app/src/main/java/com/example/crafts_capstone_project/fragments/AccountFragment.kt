@@ -62,6 +62,10 @@ class AccountFragment : Fragment() {
         val username = view.findViewById<TextView>(R.id.accountName)
         profilePic = view.findViewById(R.id.currentProfileImage)
         val firebaseUser: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
+        if (firebaseUser.uid.isEmpty()) {
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            startActivity(intent)
+        }
         val refUsers = FirebaseDatabase.getInstance().getReference("users").child(firebaseUser.uid)
         refUsers.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -157,57 +161,44 @@ class AccountFragment : Fragment() {
         }
 
         pay.setOnClickListener {
-            val intent = Intent(requireContext(), OrderStatusActivity::class.java)
-            startActivity(intent)
+            val orderId = getOrderIdForStatus("pay")
+            startOrderStatusActivity(orderId)
         }
 
         ship.setOnClickListener {
-            val intent = Intent(requireContext(), OrderStatusActivity::class.java)
-            startActivity(intent)
+            val orderId = getOrderIdForStatus("ship")
+            startOrderStatusActivity(orderId)
         }
 
         receive.setOnClickListener {
-            val intent = Intent(requireContext(), OrderStatusActivity::class.java)
-            startActivity(intent)
+            val orderId = getOrderIdForStatus("receive")
+            startOrderStatusActivity(orderId)
         }
 
         returns.setOnClickListener {
-            val intent = Intent(requireContext(), OrderStatusActivity::class.java)
-            startActivity(intent)
+            val orderId = getOrderIdForStatus("returns")
+            startOrderStatusActivity(orderId)
         }
 
         return view
     }
-    private fun fetchOrderStatus(action: String) {
-        val databaseReference = FirebaseDatabase.getInstance().reference.child("orderStatus")
-        databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    for (orderSnapshot in snapshot.children) {
-                        val orderId = orderSnapshot.key // Get the orderId
-                        val productName = orderSnapshot.child("productName").getValue(String::class.java) // Get the productName
-                        val totalAmount = orderSnapshot.child("totalAmount").getValue(Double::class.java) // Get the totalAmount
 
-                        // Pass the data to the OrderStatusActivity
-                        val intent = Intent(requireContext(), OrderStatusActivity::class.java).apply {
-                            putExtra("orderId", orderId)
-                            putExtra("productName", productName)
-                            putExtra("totalAmount", totalAmount)
-                            putExtra("action", action) // Add the action
-                        }
-                        startActivity(intent)
-                        return
-                    }
-                } else {
-                    Toast.makeText(requireContext(), "No order found", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(requireContext(), "Failed to fetch order details: ${error.message}", Toast.LENGTH_SHORT).show()
-            }
-        })
+    private fun getOrderIdForStatus(status: String): String {
+        return when (status) {
+            "pay" -> "orderIdForPay"
+            "ship" -> "orderIdForShip"
+            "receive" -> "orderIdForReceive"
+            "returns" -> "orderIdForReturns"
+            else -> ""
+        }
     }
+
+    private fun startOrderStatusActivity(orderId: String) {
+        val intent = Intent(requireContext(), OrderStatusActivity::class.java)
+        intent.putExtra("orderId", orderId)
+        startActivity(intent)
+    }
+
     private fun pickImage() {
         val intent = Intent()
         intent.type = "image/*"

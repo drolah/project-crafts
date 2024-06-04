@@ -112,13 +112,12 @@ class ProductQtyActivity : AppCompatActivity() {
         val quantity = num
         val orderId = databaseReference.push().key ?: return
         val total = product.price * quantity.toDouble()
-
         val order = Order(
             orderId = orderId,
             username = username,
             email = email,
             name = product.productName,
-            price = product.price.toDouble(),
+            price = product.price,
             quantity = quantity,
             total = total,
             image = product.image,

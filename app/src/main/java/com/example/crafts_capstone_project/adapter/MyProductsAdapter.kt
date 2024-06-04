@@ -46,12 +46,10 @@ class MyProductsAdapter(private val context: Context, private val products: Muta
                 price.text = "P ${product.price}"
                 ImageDownloaderTask(image).execute(product.image)
                 updateProduct.setOnClickListener {
-                    // Handle update button click
                     updateProduct(product)
                 }
 
                 deleteProduct.setOnClickListener {
-                    // Handle delete button click
                     deleteProduct(product)
                 }
             }
@@ -79,8 +77,7 @@ class MyProductsAdapter(private val context: Context, private val products: Muta
                 for (snapshot in dataSnapshot.children) {
                     snapshot.ref.removeValue().addOnSuccessListener {
                         Toast.makeText(context, "Product deleted successfully", Toast.LENGTH_SHORT).show()
-                        // Remove the deleted product from the local list
-                        (products as MutableList).remove(product)
+                        products.remove(product)
                         notifyDataSetChanged()
                     }.addOnFailureListener {
                         Toast.makeText(context, "Failed to delete product", Toast.LENGTH_SHORT).show()
@@ -99,7 +96,6 @@ class MyProductsAdapter(private val context: Context, private val products: Muta
             putExtra("productName", product.productName)
             putExtra("productPrice", product.price)
             putExtra("productImage", product.image)
-            // Add other product details if needed
         }
         context.startActivity(intent)
     }

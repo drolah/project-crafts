@@ -48,20 +48,15 @@ class MainActivity : ComponentActivity() {
         login.setOnClickListener {
             val emailText = email.text.toString()
             val passwordText = password.text.toString()
-
-            // Validate email and password fields
             if (TextUtils.isEmpty(emailText) || TextUtils.isEmpty(passwordText)) {
                 Toast.makeText(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Sign in user with Firebase Authentication
             auth.signInWithEmailAndPassword(emailText, passwordText)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        // Get user ID
                         val userId = auth.currentUser?.uid
-                        // Retrieve username from Realtime Database
                         userId?.let { uid ->
                             database.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -70,12 +65,9 @@ class MainActivity : ComponentActivity() {
                                         val username = userData["username"] as String
                                         val userInfo = dataSnapshot.getValue(Users::class.java)
                                         userInfo?.let {
-                                            // Save username in SharedPreferences
                                             saveUsername(username, emailText, passwordText)
-
                                             database.child(uid).child("isOnline").setValue(true).addOnCompleteListener { updateTask ->
                                                 if (updateTask.isSuccessful) {
-                                                    // Start HomeActivity
                                                     isUserLoggedIn()
                                                     val intent = Intent(this@MainActivity, HomeActivity::class.java)
                                                     startActivity(intent)

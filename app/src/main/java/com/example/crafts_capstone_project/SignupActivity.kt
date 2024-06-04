@@ -78,15 +78,12 @@ class SignupActivity : AppCompatActivity() {
                 Toast.makeText(this, "Password must be at least 8 characters long and contain at least one digit, one lowercase letter, one uppercase letter, and one special character", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
-            // Check if username already exists
             database.reference.child("users").orderByChild("username").equalTo(usernameText)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {
                             Toast.makeText(this@SignupActivity, "Username already exists", Toast.LENGTH_SHORT).show()
                         } else {
-                            // Sign up user with Firebase Authentication
                             auth.createUserWithEmailAndPassword(emailText, passwordText)
                                 .addOnCompleteListener(this@SignupActivity) { task ->
                                     if (task.isSuccessful) {

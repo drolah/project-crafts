@@ -64,7 +64,6 @@ class OrderActivity : AppCompatActivity(), OrderClickListener {
 
         fetchOrders(email)
     }
-
     private fun fetchOrders(email: String) {
         progressBar.visibility = View.VISIBLE
         databaseReference.orderByChild("email").equalTo(email)

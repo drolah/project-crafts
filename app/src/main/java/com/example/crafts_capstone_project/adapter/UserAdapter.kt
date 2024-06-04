@@ -74,19 +74,12 @@ class UserAdapter(mContext: Context, mUserList: List<Users>, isChatCheck: Boolea
         } else{
             holder.lastMessageTextView.visibility = View.GONE
         }
-        if (isChatCheck){
-            if (user.isOnline()){
-                holder.onlineImageView.visibility = View.VISIBLE
-                holder.offlineImageView.visibility = View.GONE
-            }
-            else{
-                holder.onlineImageView.visibility = View.GONE
-                holder.offlineImageView.visibility = View.VISIBLE
-            }
-        }
-        else{
-            holder.onlineImageView.visibility = View.GONE
+        if (user.isOnline()) {
+            holder.onlineImageView.visibility = View.VISIBLE
             holder.offlineImageView.visibility = View.GONE
+        } else {
+            holder.onlineImageView.visibility = View.GONE
+            holder.offlineImageView.visibility = View.VISIBLE
         }
 
         holder.itemView.setOnClickListener {

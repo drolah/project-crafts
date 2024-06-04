@@ -175,7 +175,11 @@ class PaymentActivity : AppCompatActivity() {
 
     private fun saveOrderStatus(orderId: String, status: String, order: Order) {
         val databaseReference = FirebaseDatabase.getInstance().reference.child("orderStatus").child(orderId)
+        val newOrderStatusRef = databaseReference.push()
+        val orderStatusId = newOrderStatusRef.key ?: ""
+
         val orderStatus = OrderStatus(
+            orderStatusId = orderStatusId,
             orderId = orderId,
             productName = order.name,
             status = status,
@@ -184,7 +188,8 @@ class PaymentActivity : AppCompatActivity() {
             quantityReturned = 0,
             totalAmount = if (status == "Paid") 0.0 else order.total
         )
-        databaseReference.setValue(orderStatus)
+
+        newOrderStatusRef.setValue(orderStatus)
             .addOnSuccessListener {
                 Toast.makeText(this@PaymentActivity, "Order status saved", Toast.LENGTH_SHORT).show()
             }
@@ -192,4 +197,5 @@ class PaymentActivity : AppCompatActivity() {
                 Toast.makeText(this@PaymentActivity, "Failed to save order status", Toast.LENGTH_SHORT).show()
             }
     }
+
 }
